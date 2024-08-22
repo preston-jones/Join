@@ -1,0 +1,75 @@
+<div id="edit-contact-form-container" class="contact-form-container">
+  <div class="close-btn-container" onclick="closeEditContactForm()">
+    <img src="./assets/img/icons/cancel.svg" />
+  </div>
+  <div class="contact-form-left">
+    <div>
+      <img src="./assets/img/logo_white.svg" alt="Join Logo" />
+      <h1>Edit Contact</h1>
+      <p></p>
+    </div>
+  </div>
+
+  <div class="contact-form-right">
+    <div class="contact-form-img-container">
+      <img src="./assets/img/icons/person.svg" alt="contact picture" />
+    </div>
+
+    <form autocomplete="off" id="edit-contact-form" class="contact-form-inputs">
+      <div class="input-container">
+        <input
+          onfocusout="highlightInvalid(this)"
+          class="input-field"
+          type="text"
+          pattern="[a-z A-Z]+"
+          title="max 30 letters - no numbers or special characters"
+          minlength="3"
+          maxlength="30"
+          id="edit-contact-name"
+          placeholder="Name"
+          required
+        />
+        <img src="./assets/img/icons/person_grey.svg" />
+      </div>
+
+      <div class="input-container">
+        <input
+          onfocusout="highlightInvalid(this)"
+          class="input-field"
+          type="email"
+          id="edit-contact-email"
+          placeholder="Email"
+          required
+        />
+        <img src="./assets/img/icons/mail.svg" />
+      </div>
+
+      <div class="input-container">
+        <input
+          onfocusout="highlightInvalid(this)"
+          class="input-field"
+          type="tel"
+          pattern="[0-9]{3,15}"
+          title="3-15 digits - no special characters"
+          id="edit-contact-phone"
+          placeholder="Phone"
+          required
+        />
+        <img src="./assets/img/icons/call.svg" />
+      </div>
+
+      <div class="contact-form-button-container">
+        <button
+          class="button-secondary-w-icon cancel-btn"
+          onclick="closeEditContactForm(); return false;"
+          formnovalidate
+        >
+          Cancel <img src="./assets/img/icons/cancel.svg" />
+        </button>
+        <button class="button-w-icon">
+          Save <img src="./assets/img/icons/check.svg" />
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

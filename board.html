@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="icon" href="assets/img/logo_white.svg" sizes="any" type="image/svg+xml">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./assets/fonts/inter.css">
+    <link rel="stylesheet" href="./styles/contacts.css">
+    <link rel="stylesheet" href="./styles/add_task.css">
+    <link rel="stylesheet" href="./styles/board.css">
+    <link rel="stylesheet" href="./styles/board_task_thumbnail.css">
+    <link rel="stylesheet" href="./styles/board_task_card.css">
+    <link rel="stylesheet" href="./styles/board_add_task_popup.css">
+    <link rel="stylesheet" href="./styles/board_task_form_overwrite.css">
+    <link rel="stylesheet" href="./styles/board_responsive.css">
+
+    <script src="./js/storage.js"></script>
+    <script src="./js/contacts.js"></script>
+    <script src="./js/task_subtasks.js"></script>
+    <script src="./js/task_users.js"></script>
+    <script src="./js/task_add.js"></script>
+    <script src="./js/task_render.js"></script>
+    <script src="./script.js"></script>
+    <script src="./js/board_HTML_Templates.js"></script>
+    <script src="./js/board.js"></script>
+</head>
+
+<body onload="init()">
+    <div class="container">
+        <header w3-include-html="./assets/templates/header.html"></header>
+        <nav w3-include-html="./assets/templates/sidebar.html"></nav>
+        <main>
+            <div class="board_header_container">
+                <div class="board_header">
+                    <div class="board_headline_container">
+                        <h1>Board</h1>
+                        <a href="add_task.html"><button class="button_add_task" id="button_add_task_mobile"><img
+                                    src="assets/img/icons/add.svg"></button></a>
+                    </div>
+                    <div class="board_search_task_container">
+                        <div class="input_container">
+                            <input onkeydown="searchTask()" class="inputfield" id="inputfield_find_task" type="text"
+                                placeholder="Find Task" required>
+                            <div class="search_icon_container" onclick="searchTask()">
+                                <img id="divider" src="assets/img/icons/Vector 3.svg">
+                                <div class="search_icon_frame">
+                                    <img id="search_icon" src="assets/img/icons/search.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <button id="button_add_task_desktop" onclick="openAddTaskPopup(TASK_STATUS_TODO)"><span>Add
+                                task</span><img src="assets/img/icons/add.svg"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="categories_container">
+                <div class="column">
+                    <div class="categories">
+                        <p>To do</p>
+                        <div class="plus_icon_frame" onclick="openAddTaskPopup(TASK_STATUS_TODO)">
+                            <img src="assets/img/icons/plus.svg">
+                        </div>
+                        <a href="add_task.html" class="plus_icon_mobile_link">
+                            <div class="plus_icon_frame_mobile">
+                                <img src="assets/img/icons/plus.svg">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="column_content" id="column_todo" ondrop="moveTo(0)"
+                        ondragover="allowDrop(event); highlight('column_todo')"
+                        ondragleave="removeHighlight('column_todo')">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="categories">
+                        <p>In progress</p>
+                        <div class="plus_icon_frame" onclick="openAddTaskPopup(TASK_STATUS_INPROGRESS)">
+                            <img src="assets/img/icons/plus.svg">
+                        </div>
+                        <a href="add_task.html" class="plus_icon_mobile_link">
+                            <div class="plus_icon_frame_mobile">
+                                <img src="assets/img/icons/plus.svg">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="column_content" id="column_in_progress" ondrop="moveTo(1)"
+                        ondragover="allowDrop(event); highlight('column_in_progress')"
+                        ondragleave="removeHighlight('column_in_progress')">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="categories">
+                        <p>Await feedback</p>
+                        <div class="plus_icon_frame" onclick="openAddTaskPopup(TASK_STATUS_AWAITFEEDBACK)">
+                            <img src="assets/img/icons/plus.svg">
+                        </div>
+                        <a href="add_task.html" class="plus_icon_mobile_link">
+                            <div class="plus_icon_frame_mobile">
+                                <img src="assets/img/icons/plus.svg">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="column_content" id="column_await_feedback" ondrop="moveTo(2)"
+                        ondragover="allowDrop(event); highlight('column_await_feedback')"
+                        ondragleave="removeHighlight('column_await_feedback')">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="categories">
+                        <p>Done</p>
+                    </div>
+                    <div class="column_content" id="column_done" ondrop="moveTo(3)"
+                        ondragover="allowDrop(event); highlight('column_done')"
+                        ondragleave="removeHighlight('column_done')">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+            <div id="add_task_popup_container" class="add_task_popup_container">
+                <div id="add-task-placeholder"></div>
+            </div>
+            <div id="task-card-bgr-container" onclick="closeTaskCard()">
+                <div class="task_card_container" id="task-card" onclick="event.stopPropagation()"></div>
+            </div>
+</body>
+</html>

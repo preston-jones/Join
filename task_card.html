@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Card</title>
+    <link rel="stylesheet" href="./styles/add_task.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./assets/fonts/inter.css">
+    <link rel="stylesheet" href="./styles/contacts.css">
+    <script src="script.js"></script>
+    <script src="./js/tasks.js"></script>
+    <script src="./js/storage.js"></script>
+    <script src="./js/task_render.js"></script>
+    <script src="./js/contacts.js"></script>
+</head>
+<body onload="drawCards()">
+<div style="display: flex;
+flex-direction: column;
+align-items: center;">
+    <div>
+    <div id="board_popup_placeholder" class="d-none">
+    </div>
+    <button onclick="resetRemote('tasks')" class="back-btn">resetRemoteTasks</button>
+    <button class="back-btn">
+        <a href="add_task.html">Add Task</a></button>
+    </div>
+<div class="dp-flex flex-column" style="align-items: flex-start; margin: 40px; padding: 40px;" id="task-card">
+    
+</div> 
+</div>  
+</body>
+</html>

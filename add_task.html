@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+    <link rel="icon" href="assets/img/logo_white.svg" sizes="any" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/add_task.css">
+    <link rel="stylesheet" href="./styles/contacts.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./assets/fonts/inter.css">
+    <script src="./script.js"></script>
+    <script src="./js/contacts.js"></script>
+    <script src="./js/task_subtasks.js"></script>
+    <script src="./js/task_users.js"></script>
+    <script src="./js/task_add.js"></script>
+    <script src="./js/task_render.js"></script>
+    <script src="./js/storage.js"></script>
+</head>
+<body onload="addTaskInit()">
+    <div class="container">
+        <header w3-include-html="./assets/templates/header.html"></header>
+        <nav w3-include-html="./assets/templates/sidebar.html"></nav>
+        <main>
+            <div id="add-task-placeholder"> </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join | Login</title>
+    <link rel="icon" type="image/svg" href="assets/img/logo_dark.svg">
+    <link rel="stylesheet" href="./styles/login.css">
+    <link rel="stylesheet" href="./assets/fonts/inter.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <div class="content dp-flex flex-column">
+        <!-- login logo -->
+        <div id="animations-helper" class="start-animations-helper"></div>
+        <img id="join-logo" class="login-logo" src="./assets/img/logo_dark.svg" alt="">
+
+        <!-- switch to sign up -->
+        <div class="switch-to-sign-up_frame dp-flex">
+            <p id="switch-signIn-signUp_paragraph">Not a Join user?</p>
+            <button id="handle-signIn-signUp_button" onclick="goToSite(2)" class="button">Sign up</button>
+        </div>
+
+        <!-- after register message div -->
+        <div class="registerWasASuccess dp-flex d-none"></div>
+
+        <div class="card_frame dp-flex flex-column">
+            <!-- Login Card -->
+            <div id="login-card_frame" class="login-card-frame dp-flex flex-column">
+                <div id="login_card" class="login-card dp-flex flex-column">
+                    <!-- headline -->
+                    <div class="headline-frame dp-flex flex-column">
+                        <h1 style="text-align: center;">Log in</h1>
+                        <div class="headline-underline"></div>
+                    </div>
+
+
+                    <!-- login inputs -->
+                    <form onsubmit="logIn(); return false;" style="gap: 32px;" class="dp-flex flex-column" action="#">
+                        <div style="width: 422px;" class="input-container" formValidation>
+                            <input id="login-email" required class="input-field" type="email" placeholder="Email">
+                            <img src="./assets/img/icons/mail.svg" alt="mail">
+                        </div>
+                        <div class="input-container_frame dp-flex flex-column">
+                            <div style="width: 422px;" class="input-container" formValidation>
+                                <input id="login-password" required type="password" class="input-field password-input"
+                                    placeholder="Password">
+                                <img class="pw-img" src="./assets/img/icons/lock.svg">
+                                <img onclick="handleVisibility()" class="password-eye d-none visible-img visibility-off"
+                                    src="./assets/img/icons/visibility_off.svg" alt="">
+                            </div>
+                            <div id="warning" class="warning w100 dp-flex d-none"></div>
+                            <div class="forgot-password link w100 dp-flex d-none">Forgot your password?</div>
+                        </div>
+
+                        <div class="rememberMe dp-flex">
+                            <input class="checkbox" type="checkbox" id="remember" name="remember"
+                                value="remember-login">
+                            <label for="remember">remember me</label><br>
+                        </div>
+                        <div class="login-button_frame dp-flex w100">
+                            <button submitButton type="submit" class="button button-login">Log in</button>
+                            <div onclick="logInAsGuest()" class="button-secondary">Guest Log in</div>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+        </div>
+
+
+        <div class="dp-flex policy_frame">
+            <a onclick="cameFromLogin('privacy')" class="policy-link" href="#">Privacy Policy</a>
+            <a onclick="cameFromLogin('legality')" class="policy-link" href="#">Legal notice</a>
+        </div>
+
+    </div>
+
+    <script src="./js/login.js"></script>
+    <script src="./js/storage.js"></script>
+</body>
+
+</html>

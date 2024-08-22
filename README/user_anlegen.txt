@@ -1,0 +1,87 @@
+USER ABLEGEN
+----------
+storage.js
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body onload="init()">
+
+  <form onsubmit="register(); return false;">
+    <input required type="email" id="email">
+    <input required type="password" id="password">
+    <button id="registerBtn">Registrieren</button>
+  </form>
+
+  <script src="js/storage.js"></script>
+  <script src="js/register.js"></script>
+</body>
+
+</html>
+
+--------------------------------------------------------------------------------------
+
+// storage.js
+
+const STORAGE_TOKEN = '0Z1Q9HE43ON0A54CI84FYNGARJ24D5UQ0NVE4O98';
+const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
+
+
+async function setItem(key, value) {
+    const payload = { key, value, token: STORAGE_TOKEN };
+    return fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) })
+        .then(res => res.json());
+}
+
+async function getItem(key) {
+    const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
+    return fetch(url).then(res => res.json()).then(res => {
+        // Verbesserter code
+        if (res.data) { 
+            return res.data.value;
+        } throw `Could not find data with key "${key}".`;
+    });
+}
+
+--------------------------------------------------------------------------------------
+
+// register.js
+
+let users = [];
+
+
+async function init(){
+    loadUsers();
+}
+
+async function loadUsers(){
+    try {
+        users = JSON.parse(await getItem('users'));
+    } catch(e){
+        console.error('Loading error:', e);
+    }
+}
+
+
+async function register() {
+    registerBtn.disabled = true;
+    users.push({
+        email: email.value,
+        password: password.value,
+    });
+    await setItem('users', JSON.stringify(users));
+    resetForm();
+}
+
+function resetForm() {
+    email.value = '';
+    password.value = '';
+    registerBtn.disabled = false;
+}

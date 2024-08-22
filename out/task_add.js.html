@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: task_add.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: task_add.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const PRIO_URG = 1;
+const PRIO_MDM = 2;
+const PRIO_LOW = 3;
+const TASK_STATUS_TODO = 0;
+const TASK_STATUS_INPROGRESS = 1;
+const TASK_STATUS_AWAITFEEDBACK = 2;
+const TASK_STATUS_DONE = 3;
+
+let taskPrio = PRIO_MDM;
+let tasks = [];
+let storedTasks = [];
+let category = [];
+
+const taskStatusCategories = ["To do", "In progress", "Await feedback", "Done"];
+
+const categories = [
+    {
+        name: 'Development',
+        colour: '#462F8A',
+    },
+    {
+        name: 'Design',
+        colour: '#FF7A00',
+    },
+    {
+        name: 'Project and Task Management',
+        colour: '#1FD7C1',
+    },
+    {
+        name: 'Collaboration and Communication',
+        colour: '#0038FF',
+    },
+    {
+        name: 'Management',
+        colour: '#9C27B0',
+    },
+];
+
+/**
+ * Initializes the add task functionality.
+ * Loads templates, contacts, sets current page link active, and renders the add task form.
+ * @returns {Promise&lt;void>} A promise that resolves when the initialization is complete.
+ */
+async function addTaskInit() {
+    await loadTemplates();
+    await loadContacts();
+    setCurrentPageLinkActive("add_task");
+    renderAddTaskForm('add-task-placeholder');
+}
+
+/**
+ * Submits a task with the given task status and optional task ID.
+ * @param {string} taskStatus - The status of the task.
+ * @param {number} [submitTaskID=0] - The ID of the task to be submitted (optional).
+ * @returns {Promise&lt;void>} - A promise that resolves when the task is submitted.
+ */
+async function submitTask(taskStatus, submitTaskID = 0) {
+
+    let title = document.getElementById('task-title').value;
+    let description = document.getElementById('task-description').value;
+    let date = new Date(document.getElementById('task-date').value);
+    let task = {
+        'title': title,
+        'description': description,
+        'date': date,
+        'prio': taskPrio,
+        'assignedUsers': assignUserList,
+        'category': category,
+        'taskStatus': taskStatus,
+        'taskID': new Date().getTime(),
+        'subtasks': subtasks,
+    };
+
+    tasks = await getRemote('tasks');
+
+    if(submitTaskID){
+        const index = tasks.findIndex((task) => task.taskID === submitTaskID);
+        task.taskID = submitTaskID;
+        tasks[index] = task;
+    } else {
+        tasks.push(task);
+    }
+  
+    await setItem('tasks', tasks);
+    showAddedTaskMsg();
+    //redirect to task card for a new task
+    if(!submitTaskID){
+        setTimeout(() => {
+            window.location.href = `./board.html`;
+        }, 1800);
+    }
+}
+
+/**
+ * Shows a message indicating that a task has been added.
+ */
+function showAddedTaskMsg() {
+    document.getElementById("task-added").classList.remove("d-none");
+    setTimeout(() => {
+      const taskAdded = document.getElementById("task-added");
+      if (taskAdded) {
+        taskAdded.classList.add("d-none");
+      }
+    }, 900);
+  }
+
+/**
+ * Updates the priority button based on the pressed state.
+ * @param {boolean} pressed - The state of the button (true if pressed, false otherwise).
+ * @param {string} btn - The ID of the button element.
+ */
+function prioButtonUpdate(pressed, btn) {
+        if(pressed){
+            document.getElementById(btn).classList.add('d-none');
+            document.getElementById(btn + '-clicked').classList.remove('d-none');
+        } else {
+            document.getElementById(btn).classList.remove('d-none');
+            document.getElementById(btn + '-clicked').classList.add('d-none');
+        }
+}
+
+/**
+ * Sets the task priority to urgent and updates the priority buttons accordingly.
+ */
+function prioButtonUrgent(){
+    taskPrio = PRIO_URG;
+    prioButtonUpdate(true, 'urgent-btn');
+    prioButtonUpdate(false, 'medium-btn');
+    prioButtonUpdate(false, 'low-btn');
+}
+
+/**
+ * Sets the task priority to medium and updates the priority buttons accordingly.
+ */
+function prioButtonMedium(){
+    taskPrio = PRIO_MDM;
+    prioButtonUpdate(false, 'urgent-btn');
+    prioButtonUpdate(true, 'medium-btn');
+    prioButtonUpdate(false, 'low-btn');
+}
+
+/**
+ * Sets the task priority to low and updates the priority buttons accordingly.
+ */
+function prioButtonLow(){
+    taskPrio = PRIO_LOW;
+    prioButtonUpdate(false, 'urgent-btn');
+    prioButtonUpdate(false, 'medium-btn');
+    prioButtonUpdate(true, 'low-btn');
+}
+
+/**
+ * Disables the default behavior of a button.
+ * @param {string} button - The ID of the button to disable.
+ */
+function disableBtnsDefault(button){
+    document.getElementById(button).addEventListener('click', function(event) {
+        event.preventDefault();
+    });
+}
+
+/**
+ * Disables the default behavior of buttons.
+ */
+function disablePrioBtns(){
+    disableBtnsDefault('urgent-btn');
+    disableBtnsDefault('medium-btn');
+    disableBtnsDefault('low-btn');
+    disableBtnsDefault('urgent-btn-clicked');
+    disableBtnsDefault('medium-btn-clicked');
+    disableBtnsDefault('low-btn-clicked');
+    disableBtnsDefault('user-select-button');
+    disableBtnsDefault('categories-select-button');
+}
+
+
+/**
+ * Renders a category list item with the given name, colour, and index.
+ * 
+ * @param {string} name - The name of the category.
+ * @param {string} colour - The colour of the category.
+ * @param {number} index - The index of the category.
+ * @returns {string} The HTML representation of the category list item.
+ */
+function renderCategoriesList(name, colour, index) {
+    return /*html*/`
+            &lt;div class="dropdown-position" onclick="selectOptionCat(this, ${index})" id="category-${name}">
+                &lt;div class="initials-name" value="${index}" name="${name}">
+                ${name}
+                &lt;/div>
+                &lt;div class="acc-initials categories-colour" style="background-color: ${colour}">
+                &lt;/div>
+            &lt;/div>
+        `;
+    }
+
+/**
+ * Toggles the visibility of the categories select dropdown and renders the categories list.
+ */
+function toggleCategoriesSelect() {
+    let categoriesList = document.getElementById('categories-list');
+    categoriesList.innerHTML = '';
+    for (let index = 0; index &lt; categories.length; index++) {
+        let name = categories[index]['name'];
+        let colour = categories[index]['colour'];
+        categoriesList.innerHTML += renderCategoriesList(name, colour, index);
+    }   
+    const dropdown = document.getElementById('categories-list');
+    const dropdownIcon = document.getElementById('dropdown-icon-categories');
+    dropdownIcon.classList.toggle("rotate");
+    dropdown.classList.toggle("d-none-ni");
+}
+
+/**
+ * Retrieves the task category list.
+ * @returns {Promise&lt;Array>} The task category list.
+ */
+ async function getTaskCategorieList() {
+    return categories;
+ }
+
+/**
+ * Handles category selection in the categories dropdown and updates the category value.
+ * @param {HTMLElement} element - The element representing the selected option.
+ * @param {number} index - The index of the selected option in the dropdown.
+ * @returns {Promise&lt;void>} - A promise that resolves when the selected category is retrieved.
+ */
+async function selectOptionCat(element, index) {
+    const selectedCategoryInput = document.getElementById('selected-category');
+    const selectedEntry = element.querySelector('.initials-name').getAttribute('name');
+
+    // Update the input value and close the dropdown
+    selectedCategoryInput.value = selectedEntry;
+    toggleCategoriesSelect();
+    const selectedCategory = await getTaskCategorieList();
+    
+    category = selectedCategory[index];
+}
+
+/**
+ * Callback for closing dropdown on click outside
+*/
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('categories-list');
+    const dropdownContainer = document.getElementById('categories-select-button');
+    const dropdownIcon = document.getElementById('dropdown-icon-categories');
+
+    if(dropdownContainer){
+        if (!dropdownContainer.contains(event.target)) {
+            // Click is outside the dropdown, close it
+            dropdown.classList.add('d-none-ni');
+            dropdownIcon.classList.remove('rotate');
+        }
+    }
+});
+
+
+/**
+ * Generates a unique ID based on the current timestamp.
+ * @returns {number} The generated unique ID.
+ */
+function generateUniqueID() {
+    const timestamp = new Date().getTime();
+    return timestamp;
+}
+
+/**
+ * Resets the value of a subtask input field.
+ * @param {HTMLInputElement} subtaskInput - The input field to be reset.
+ */
+function resetSubtaskInput(subtaskInput) {
+    // Clear the input value
+    subtaskInput.value = '';
+}
+
+/**
+ * Retrieves the task status by index.
+ * @param {number} idx - The index of the task status.
+ * @returns {string} The task status.
+ */
+function getTaskStatusByIndex(idx){
+    return taskStatusCategories[idx];
+}
+
+/**
+ * Retrieves a task by its ID.
+ * @param {string} id - The ID of the task.
+ * @returns {Object} - The task object matching the provided ID.
+ */
+async function getTaskById(id){
+    tasks = await getRemote('tasks');
+    const index = tasks.findIndex((task) => task.taskID === id);
+    return tasks[index];
+}
+
+/**
+ * Deletes a task with the specified ID.
+ * @param {string} id - The ID of the task to be deleted.
+ * @returns {Promise&lt;void>} - A promise that resolves when the task is deleted.
+ */
+async function deleteTask(id) {
+    tasks = await getRemote('tasks');
+    const index = tasks.findIndex((task) => task.taskID === id);
+    if (index !== -1) {
+        tasks.splice(index, 1);
+    }
+    await setItem('tasks', tasks);
+    window.location.href = `./board.html`;
+}
+
+/**
+ * Clears the task form by removing assigned users and subtasks.
+ */
+function taskFormClear(){
+    assignUserList.forEach(user => {
+        const selectedIcon = document.getElementById('selected-icon-user-assigned-' + user.id.toString());
+        if (selectedIcon) {
+            selectedIcon.remove();
+        }
+    });
+    assignUserList = [];
+    subtasks = [];
+    document.getElementById('select-subtask').innerHTML = '';
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#SubtasksDone">SubtasksDone</a></li><li><a href="global.html#addTaskInit">addTaskInit</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#awaitFeedback">awaitFeedback</a></li><li><a href="global.html#checkboxRevertToggle">checkboxRevertToggle</a></li><li><a href="global.html#checkboxToggle">checkboxToggle</a></li><li><a href="global.html#closeAddContactForm">closeAddContactForm</a></li><li><a href="global.html#closeAddTaskPopup">closeAddTaskPopup</a></li><li><a href="global.html#closeEditContactForm">closeEditContactForm</a></li><li><a href="global.html#closeEditSavedSubtask">closeEditSavedSubtask</a></li><li><a href="global.html#closeEditSubtask">closeEditSubtask</a></li><li><a href="global.html#closeTaskCard">closeTaskCard</a></li><li><a href="global.html#closeThumbnailSubmenu">closeThumbnailSubmenu</a></li><li><a href="global.html#convertDueDates">convertDueDates</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createSubtaskListItem">createSubtaskListItem</a></li><li><a href="global.html#currentDraggedElementID">currentDraggedElementID</a></li><li><a href="global.html#currentDraggedElementINDEX">currentDraggedElementINDEX</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#disableBtnsDefault">disableBtnsDefault</a></li><li><a href="global.html#disablePrioBtns">disablePrioBtns</a></li><li><a href="global.html#done">done</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editModeSavedSubtask">editModeSavedSubtask</a></li><li><a href="global.html#editModeSubtask">editModeSubtask</a></li><li><a href="global.html#filterUsers">filterUsers</a></li><li><a href="global.html#focusEditSavedSubtask">focusEditSavedSubtask</a></li><li><a href="global.html#generateUniqueID">generateUniqueID</a></li><li><a href="global.html#getSelectedUser">getSelectedUser</a></li><li><a href="global.html#getTaskById">getTaskById</a></li><li><a href="global.html#getTaskCategorieList">getTaskCategorieList</a></li><li><a href="global.html#getTaskStatusByIndex">getTaskStatusByIndex</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#greetUser">greetUser</a></li><li><a href="global.html#hideContactDetails">hideContactDetails</a></li><li><a href="global.html#hideMore">hideMore</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#highlightActiveContact">highlightActiveContact</a></li><li><a href="global.html#highlightInvalid">highlightInvalid</a></li><li><a href="global.html#highlightLatestContact">highlightLatestContact</a></li><li><a href="global.html#inProgress">inProgress</a></li><li><a href="global.html#incertSubtask">incertSubtask</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#loadBoard">loadBoard</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadEditContactValues">loadEditContactValues</a></li><li><a href="global.html#loadEditTaskForm">loadEditTaskForm</a></li><li><a href="global.html#loadMoveTo">loadMoveTo</a></li><li><a href="global.html#loadNoSubtasksInThumbnail">loadNoSubtasksInThumbnail</a></li><li><a href="global.html#loadPrioTasks">loadPrioTasks</a></li><li><a href="global.html#loadSearchResult">loadSearchResult</a></li><li><a href="global.html#loadSubtasksInCard">loadSubtasksInCard</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTaskDoneHTML">noTaskDoneHTML</a></li><li><a href="global.html#noTaskToDoHTML">noTaskToDoHTML</a></li><li><a href="global.html#normalDate">normalDate</a></li><li><a href="global.html#normalDateEditTask">normalDateEditTask</a></li><li><a href="global.html#openAddTaskPopup">openAddTaskPopup</a></li><li><a href="global.html#openTaskCard">openTaskCard</a></li><li><a href="global.html#openThumbnailSubmenu">openThumbnailSubmenu</a></li><li><a href="global.html#overwriteAddTaskFormCSS">overwriteAddTaskFormCSS</a></li><li><a href="global.html#prioButtonLow">prioButtonLow</a></li><li><a href="global.html#prioButtonMedium">prioButtonMedium</a></li><li><a href="global.html#prioButtonUpdate">prioButtonUpdate</a></li><li><a href="global.html#prioButtonUrgent">prioButtonUrgent</a></li><li><a href="global.html#removeAssignedUser">removeAssignedUser</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#renderAddTaskForm">renderAddTaskForm</a></li><li><a href="global.html#renderAssignedUserIcons">renderAssignedUserIcons</a></li><li><a href="global.html#renderAssignedUsers">renderAssignedUsers</a></li><li><a href="global.html#renderAwaitFeedback">renderAwaitFeedback</a></li><li><a href="global.html#renderCategoriesList">renderCategoriesList</a></li><li><a href="global.html#renderContactDetails">renderContactDetails</a></li><li><a href="global.html#renderContactDetailsMobile">renderContactDetailsMobile</a></li><li><a href="global.html#renderContactInitials">renderContactInitials</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderDone">renderDone</a></li><li><a href="global.html#renderEditModeSavedSubtask">renderEditModeSavedSubtask</a></li><li><a href="global.html#renderEditTaskForm">renderEditTaskForm</a></li><li><a href="global.html#renderFullUsersList">renderFullUsersList</a></li><li><a href="global.html#renderHTMLUsersList">renderHTMLUsersList</a></li><li><a href="global.html#renderInProgress">renderInProgress</a></li><li><a href="global.html#renderMetricValues">renderMetricValues</a></li><li><a href="global.html#renderNoTaskDone">renderNoTaskDone</a></li><li><a href="global.html#renderNoTaskToDo">renderNoTaskToDo</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtask">renderSubtask</a></li><li><a href="global.html#renderSubtaskListItem">renderSubtaskListItem</a></li><li><a href="global.html#renderSubtaskProgressBar">renderSubtaskProgressBar</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#renderTaskCard">renderTaskCard</a></li><li><a href="global.html#renderTaskCardBoard">renderTaskCardBoard</a></li><li><a href="global.html#renderTaskForm">renderTaskForm</a></li><li><a href="global.html#renderTaskUserIcon">renderTaskUserIcon</a></li><li><a href="global.html#renderTaskUses">renderTaskUses</a></li><li><a href="global.html#renderThumbnailCard">renderThumbnailCard</a></li><li><a href="global.html#renderToDo">renderToDo</a></li><li><a href="global.html#renderUserIconDropdown">renderUserIconDropdown</a></li><li><a href="global.html#resetAddContactForm">resetAddContactForm</a></li><li><a href="global.html#resetEditContactForm">resetEditContactForm</a></li><li><a href="global.html#resetSubtaskInput">resetSubtaskInput</a></li><li><a href="global.html#returnContactListCategory">returnContactListCategory</a></li><li><a href="global.html#returnContactListEntry">returnContactListEntry</a></li><li><a href="global.html#returnNextDueDate">returnNextDueDate</a></li><li><a href="global.html#returnNumberOfTasks">returnNumberOfTasks</a></li><li><a href="global.html#returnTotalTasks">returnTotalTasks</a></li><li><a href="global.html#searchTask">searchTask</a></li><li><a href="global.html#selectOption">selectOption</a></li><li><a href="global.html#selectOptionCat">selectOptionCat</a></li><li><a href="global.html#selectSubtaskStatus">selectSubtaskStatus</a></li><li><a href="global.html#showAddContactForm">showAddContactForm</a></li><li><a href="global.html#showAddedTaskMsg">showAddedTaskMsg</a></li><li><a href="global.html#showContactCreatedNotification">showContactCreatedNotification</a></li><li><a href="global.html#showEditContactForm">showEditContactForm</a></li><li><a href="global.html#showMore">showMore</a></li><li><a href="global.html#showPopUp">showPopUp</a></li><li><a href="global.html#sortContactsAtoZ">sortContactsAtoZ</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#submitTask">submitTask</a></li><li><a href="global.html#taskCardBoard_HTML">taskCardBoard_HTML</a></li><li><a href="global.html#taskFormClear">taskFormClear</a></li><li><a href="global.html#thumbnailCard_HTML">thumbnailCard_HTML</a></li><li><a href="global.html#toDo">toDo</a></li><li><a href="global.html#toggleCategoriesSelect">toggleCategoriesSelect</a></li><li><a href="global.html#toggleCustomSelect">toggleCustomSelect</a></li><li><a href="global.html#toggleInputUsers">toggleInputUsers</a></li><li><a href="global.html#updateSavedSubtask">updateSavedSubtask</a></li><li><a href="global.html#userDropDownClick">userDropDownClick</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jan 16 2024 16:59:51 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

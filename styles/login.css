@@ -1,0 +1,443 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+}
+
+/* content */
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F6F7F8;
+    position: relative;
+}
+
+.w100 {
+    width: 100%;
+}
+
+/* login logo & animation */
+.login-logo {
+    width: 80%;
+    height: 80%;
+    position: fixed;
+    top: 80px;
+    left: 77px;
+    z-index: 999;
+    animation: logo_animation 0.75s ease-in-out 0.25s forwards;
+}
+
+.login-logo-register {
+    width: 101px;
+    height: 122px;
+    position: fixed;
+    top: 80px;
+    left: 77px;
+    z-index: 999;
+}
+
+.animate-logo {
+    animation: logo_animation 0.75s ease-in-out 0.25s forwards;
+}
+
+@keyframes logo_animation {
+    0% {
+        width: 80%;
+        height: 80%;
+    }
+
+    100% {
+        width: 101px;
+        height: 122px;
+    }
+}
+
+.start-animations-helper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: white;
+    z-index: 998;
+    animation: start-animations-helper_animation 0.75s ease-in-out 0.23s forwards;
+}
+
+@keyframes start-animations-helper_animation {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+        display: none;
+    }
+}
+
+.animate-helper {
+    animation: start-animations-helper_animation 0.75s ease-in-out 0.23s forwards;
+}
+
+/* login card */
+.login-card-frame {
+    padding: 48px 115px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.03);
+}
+
+.signUp-card-frame {
+    padding: 48px 88px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.03);
+}
+
+.login-card {
+    width: 422px;
+    gap: 32px;
+}
+
+.signUp-card {
+    width: 422px;
+    height: 534px;
+    gap: 32px;
+}
+
+.login-card h1 {
+    font-size: 61px;
+    font-weight: 700;
+    color: #000;
+    width: 315px;
+    margin: 0;
+    margin-bottom: 16px;
+}
+
+.headline-frame h1 {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 16px;
+}
+
+.headline-underline {
+    width: 150px;
+    border: 3px solid #29ABE2;
+}
+
+.rememberMe {
+    padding-left: 39px;
+    padding-right: 241px;
+    font-size: 16px;
+}
+
+.rememberMe input {
+    margin: 0;
+    margin-right: 8px;
+}
+
+label {
+    white-space: nowrap;
+    margin-top: -2.9214px;
+}
+
+.login-button_frame {
+    gap: 35px;
+}
+
+.switch-to-sign-up_frame {
+    position: fixed;
+    top: 67px;
+    right: 122px;
+    gap: 35px;
+}
+
+.switch-to-sign-up_frame p {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.switch-to-sign-in_frame {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.link {
+    text-decoration: none;
+    color: #29ABE2;
+}
+
+.link:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.checkbox:hover {
+    scale: 1.05;
+}
+
+.policy_frame {
+    width: 100%;
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    gap: 16px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.policy_frame a {
+    color: #A8A8A8;
+    text-decoration: none;
+}
+
+.policy_frame a:hover {
+    color: #29ABE2;
+    font-weight: 700;
+}
+
+.visible-img {
+    cursor: pointer;
+}
+
+.warning {
+    font-size: 12px;
+    color: red;
+    margin-top: 12px;
+}
+
+.forgot-password {
+    text-decoration: none !important;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.forgot-password:hover {
+    color: #65c7f1;
+}
+
+.back-to-login {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    cursor: pointer;
+}
+
+/* Register Success Msg */
+.registerWasASuccess {
+    width: 262px;
+    height: 74px;
+    padding-inline: 25px;
+    position: absolute;
+    bottom: 72px;
+    right: 48px;
+    background-color: #2A3647;
+    border-radius: 20px;
+    animation: registerWasASuccess 0.75s ease-in-out 3.5s forwards;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+/* invalid border */
+.border-red {
+    border-color: red !important;
+}
+
+@keyframes registerWasASuccess {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+    }
+}
+
+/* mediaquerrys */
+@media(max-width: 1024px) {
+    .login-logo {
+        top: 32px;
+    }
+
+    .login-logo-register {
+        top: 32px;
+    }
+
+    .switch-to-sign-up_frame {
+        bottom: 64px;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: unset;
+    }
+
+
+}
+
+@media(max-width: 670px) {
+    .login-card {
+        width: 100%;
+    }
+
+    .login-logo {
+        left: 24px;
+    }
+
+    .login-logo-register {
+        left: 24px;
+    }
+
+    .start-animations-helper {
+        background-color: #313D4D;
+    }
+
+    @keyframes logo_animation {
+        0% {
+            width: 80%;
+            height: 80%;
+        }
+
+        100% {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .login-button_frame {
+        flex-direction: column;
+    }
+
+    .card_frame {
+        width: 100% !important;
+        padding: 0;
+        height: 60%;
+    }
+
+    .login-card-frame {
+        width: 90%;
+        padding: 24px;
+    }
+
+    .input-container {
+        width: 90% !important;
+    }
+
+    .input-container_frame {
+        width: 100%;
+    }
+
+    .login-button_frame {
+        gap: 16px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .rememberMe {
+        padding: 0;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .switch-to-sign-up_frame {
+        gap: 16px;
+    }
+
+    .login-button_frame button {
+        font-size: 16px !important;
+        width: 80%;
+        text-align: center;
+    }
+
+    .button-secondary {
+        font-size: 16px !important;
+        width: 80%;
+        text-align: center;
+    }
+
+    .switch-to-sign-up_frame button {
+        font-size: 17px;
+    }
+
+    .switch-to-sign-up_frame p {
+        font-size: 16px;
+    }
+
+    .signUp-card-frame {
+        height: 100%;
+        width: 90%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    #privacy_frame p {
+        font-size: 16px;
+    }
+
+    .headline-frame h1 {
+        margin-bottom: 8px;
+        font-size: 48px;
+    }
+
+    #join-logo {
+        opacity: 0;
+    }
+
+    .login-logo-register {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 670px) {
+    .back-to-login {
+        display: none;
+    }
+
+    #mobile-login-logo {
+        opacity: 0;
+    }
+}
+
+@media (max-height: 750px) {
+    .switch-to-sign-up_frame {
+        top: 24px;
+        bottom: unset;
+        left: unset;
+        right: -40px;
+    }
+
+    .switch-to-sign-up_frame button {
+        font-size: 14px;
+    }
+
+    .switch-to-sign-up_frame p {
+        font-size: 14px;
+    }
+
+    @keyframes logo_animation {
+        0% {
+            width: 80%;
+            height: 80%;
+        }
+
+        100% {
+            width: 48px;
+            height: 48px;
+        }
+    }
+}

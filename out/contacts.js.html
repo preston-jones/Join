@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: contacts.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: contacts.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let contacts = [];
+
+/**
+ * This function loads several functions required on page load
+ */
+async function init() {
+  await loadTemplates();
+  await loadContacts();
+  renderContactList();
+  setCurrentPageLinkActive("contacts");
+}
+
+/**
+ * This function loads all contact objects from the
+ * remote storage - using getItem function - and saves them to the contacts array
+ */
+async function loadContacts() {
+  try {
+    contacts = JSON.parse(await getItem("contacts"));
+  } catch (e) {
+    console.warn("no contacts found on server");
+  }
+}
+
+/**
+ * This function renders the contact list with all objects found in the constacts array
+ * Entries are sorted alphabetically using the sortContactsAtoZ() function
+ */
+function renderContactList() {
+  document.getElementById("contact-list").innerHTML = "";
+
+  sortContactsAtoZ();
+
+  for (let i = 0; i &lt; sortedContacts.length; i++) {
+    let nameInitial = sortedContacts[i]["name"].charAt(0).toUpperCase();
+    let contactListCategory = document.getElementById(
+      `contact-category-${nameInitial}`
+    );
+
+    if (contactListCategory === null) {
+      document.getElementById("contact-list").innerHTML +=
+        returnContactListCategory(nameInitial) + returnContactListEntry([i]);
+    } else {
+      contactListCategory.innerHTML += returnContactListEntry([i]);
+    }
+  }
+}
+
+/**
+ * This function returns the html to render the contact list categories
+ * @param {character} character - initial letter for the category
+ * @returns html to render the contact list categories
+ */
+function returnContactListCategory(character) {
+  return `
+    &lt;p class="contact-category" 
+    id="contact-category-${character}">
+      ${character.toUpperCase()}
+    &lt;/p>
+  `;
+}
+
+/**
+ * This Function return the html to render a contact list entry
+ * @param {number} id - used to hand over the index of the contacts array of which the contact entry should be generated
+ * @returns the html to render the contact list entry
+ */
+function returnContactListEntry(id) {
+  let contact = contacts[id];
+  return `
+    &lt;div id="contact-id-${
+      contact["id"]
+    }" class="contact-entry" onclick="renderContactDetails(${id}), highlightActiveContact(this)">
+    ${renderContactInitials(returnInitials(contact["name"]), id)}
+    &lt;div>
+      &lt;name>${contact["name"]}&lt;/name>
+      &lt;email>${contact["email"]}&lt;/email>
+    &lt;/div>
+  &lt;/div>
+`;
+}
+
+/**
+ * This funtion returns the html to render a contact picture showing the initials of the contacts first and last name
+ * @param {*} initials - used to hand over the initials
+ * @param {*} id - used to hand over the index of the contacts array of the related contact to load the background color
+ * @returns the html to render a contact picture showing the initials of the contacts first and last name
+ */
+function renderContactInitials(initials, id) {
+  return `
+  &lt;div class="acc-initials" style="background-color:${contacts[id]["bgColor"]}" >
+      &lt;p>${initials}&lt;/p>
+    &lt;/div>
+  `;
+}
+
+/**
+ * This funtion removes the .contact-entry-active css class from all elements
+ * and then adds the class to the element who triggered the function
+ */
+function highlightActiveContact(element) {
+  if (window.innerWidth >= 1024) {
+    Array.from(document.querySelectorAll(".contact-entry-active")).forEach(
+      (el) => el.classList.remove("contact-entry-active")
+    );
+    element.classList.add("contact-entry-active");
+  }
+}
+
+/**
+ * This function copies the contacts array to the sortedContacts array
+ * and then sorts the array from a to z based on the first letter of the objects name
+ */
+function sortContactsAtoZ() {
+  sortedContacts = contacts;
+  sortedContacts.sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    let charsA = nameA.split("");
+    let charsB = nameB.split("");
+
+    for (let i = 0; i &lt; charsA.length; i++) {
+      if (charsA[i] &lt; charsB[i]) return -1;
+      if (charsA[i] > charsB[i]) return 1;
+      return 0;
+    }
+  });
+}
+
+/**
+ * This function renders the contact details
+ * @param {number} id - index of the object within the contacts array
+ */
+function renderContactDetails(id) {
+  renderContactDetailsMobile(id);
+  document.getElementById("contact-details").classList.remove("d-none");
+  document.getElementById("contact-innitials").innerHTML =
+    renderContactInitials(returnInitials(contacts[id]["name"]), id);
+  document.getElementById("contact-name").innerHTML = contacts[id]["name"];
+  document.getElementById("contact-email").innerHTML = contacts[id]["email"];
+  document.getElementById("contact-email").href = `
+  mailto:${contacts[id]["email"]}`;
+  document.getElementById("contact-phone").innerHTML = contacts[id]["phone"];
+  document
+    .getElementById("contact-delete")
+    .setAttribute("onclick", `deleteContact(${id})`);
+  document
+    .getElementById("contact-edit")
+    .setAttribute("onclick", `showEditContactForm(${id})`);
+}
+
+/**
+ * This function is a sublement to renderContactDetails(id) to optimize design on mobile devices
+ * @param {number} id - index of the object within the contacts array
+ */
+function renderContactDetailsMobile(id) {
+  if (window.innerWidth &lt;= 1024) {
+    document.getElementById("contact-container").classList.add("d-flex");
+    document.getElementById("contact-list-container").classList.add("d-none");
+    document
+      .getElementById("contact-mobile-delete")
+      .setAttribute("onclick", `deleteContact(${id}),hideMore()`);
+    document
+      .getElementById("contact-mobile-edit")
+      .setAttribute("onclick", `showEditContactForm(${id}),hideMore()`);
+  }
+}
+
+/**
+ * This function hides the Contact details
+ */
+function hideContactDetails() {
+  document.getElementById("contact-container").classList.remove("d-flex");
+  document.getElementById("contact-list-container").classList.remove("d-none");
+}
+
+/**
+ * This function shows the Add Contact Form
+ */
+function showAddContactForm() {
+  document
+    .getElementById("add-contact-form-container")
+    .classList.remove("fadeOut");
+  document.getElementById("add-contact-bg").classList.remove("d-none");
+  document.getElementById("add-contact-form-container").classList.add("fadeIn");
+}
+
+/**
+ * This function creates a new contact objects, pushes the object to the contacts array
+ * and then re-render the page
+ */
+async function createNewContact() {
+  const randomBgColorIndex = Math.floor(
+    Math.random() * backgroundColors.length
+  );
+
+  contacts.push({
+    id: Date.now(),
+    name: document.getElementById("add-contact-name").value,
+    email: document.getElementById("add-contact-email").value,
+    phone: document.getElementById("add-contact-phone").value,
+    bgColor: backgroundColors[randomBgColorIndex],
+  });
+
+  await setItem("contacts", JSON.stringify(contacts));
+
+  renderContactList();
+  highlightLatestContact();
+  closeAddContactForm();
+  setTimeout(showContactCreatedNotification, 2000);
+}
+
+/**
+ * This function closes the Add Contact form
+ */
+function closeAddContactForm() {
+  document
+    .getElementById("add-contact-form-container")
+    .classList.remove("fadeIn");
+  document
+    .getElementById("add-contact-form-container")
+    .classList.add("fadeOut");
+  setTimeout(resetAddContactForm, 950);
+}
+
+/**
+ * This function resets the Add Contact form
+ */
+function resetAddContactForm() {
+  document.getElementById("add-contact-bg").classList.add("d-none");
+  document.getElementById("add-contact-name").value = "";
+  document.getElementById("add-contact-email").value = "";
+  document.getElementById("add-contact-phone").value = "";
+}
+
+/**
+ * This function highlights the last created contact in the contact list
+ */
+function highlightLatestContact() {
+  const idOfmostRecentObject = Math.max(...contacts.map((e) => e.id));
+  const index = contacts.findIndex((i) => i.id == idOfmostRecentObject);
+
+  let element = document.getElementById(`contact-id-${idOfmostRecentObject}`);
+
+  Array.from(document.querySelectorAll(".contact-entry-active")).forEach((el) =>
+    el.classList.remove("contact-entry-active")
+  );
+
+  element.classList.add("contact-entry-active");
+  element.scrollIntoView(false);
+
+  renderContactDetails(index);
+}
+
+/**
+ * This function shows a notification when a new contact is created
+ */
+async function showContactCreatedNotification() {
+  document.getElementById("contact-created").classList.remove("d-none");
+  document
+    .getElementById("contact-created")
+    .classList.add("createdNotification");
+  await setTimeout(() => {
+    document.getElementById("contact-created").classList.add("d-none");
+  }, 1950);
+}
+
+/**
+ * This function deletes a object from the contacts array
+ * @param {number} id - index of the object to be deleted
+ */
+async function deleteContact(id) {
+  contacts.splice(id, 1);
+  await setItem("contacts", JSON.stringify(contacts));
+  document.getElementById("contact-details").classList.add("d-none");
+  renderContactList();
+
+  if (window.innerWidth &lt;= 1024) {
+    hideContactDetails();
+  }
+}
+
+/**
+ * This function shows the Edit Contact Form
+ * @param {number} id - index of the object in the contacts array which should be edited
+ */
+function showEditContactForm(id) {
+  loadEditContactValues(id);
+  document
+    .getElementById("edit-contact-form-container")
+    .classList.remove("fadeOut");
+  document.getElementById("edit-contact-bg").classList.remove("d-none");
+  document
+    .getElementById("edit-contact-form-container")
+    .classList.add("fadeIn");
+}
+
+/**
+ * This function loads the contact objects property values into the Edit Contact Form
+ * @param {number} id
+ */
+function loadEditContactValues(id) {
+  const contact = contacts[id];
+  document.getElementById("edit-contact-name").value = contact["name"];
+  document.getElementById("edit-contact-phone").value = contact["phone"];
+  document.getElementById("edit-contact-email").value = contact["email"];
+  document
+    .getElementById("edit-contact-form")
+    .setAttribute("onsubmit", `editContact(${id}); return false`);
+}
+
+/**
+ * This function saves the edited contact object into the contacts array
+ * @param {number} id - index of the object that was edited
+ */
+async function editContact(id) {
+  contacts[id] = {
+    id: contacts[id]["id"],
+    name: document.getElementById("edit-contact-name").value,
+    email: document.getElementById("edit-contact-email").value,
+    phone: document.getElementById("edit-contact-phone").value,
+    bgColor: contacts[id]["bgColor"],
+  };
+
+  await setItem("contacts", JSON.stringify(contacts));
+  closeEditContactForm();
+  renderContactList();
+  renderContactDetails(id);
+}
+
+/**
+ * This function resets the Edit Contact Form
+ */
+function resetEditContactForm() {
+  document.getElementById("edit-contact-bg").classList.add("d-none");
+  document.getElementById("edit-contact-name").value = "";
+  document.getElementById("edit-contact-email").value = "";
+  document.getElementById("edit-contact-phone").value = "";
+}
+
+/**
+ * This function closes the Edit Contact Form
+ */
+function closeEditContactForm() {
+  document
+    .getElementById("edit-contact-form-container")
+    .classList.remove("fadeIn");
+  document
+    .getElementById("edit-contact-form-container")
+    .classList.add("fadeOut");
+  setTimeout(resetEditContactForm, 950);
+}
+
+/**
+ * This function opens the showMore Menu which contains edit and delete buttons on mobile design
+ */
+function showMore() {
+  document.getElementById("content-container-more").classList.remove("d-none");
+  document
+    .getElementById("content-container-more")
+    .classList.remove("fadeOutMore");
+  document.getElementById("content-container-more").classList.add("fadeInMore");
+}
+
+/**
+ * This function hides the showMore Menu which contains edit and delete buttons on mobile design
+ */
+function hideMore() {
+  document
+    .getElementById("content-container-more")
+    .classList.remove("fadeInMore");
+  document
+    .getElementById("content-container-more")
+    .classList.add("fadeOutMore");
+  setTimeout(() => {
+    document.getElementById("content-container-more").classList.add("d-none");
+  }, 950);
+}
+
+/**
+ * This function adds the .input-invalid css class when input is not valid
+ * @param {string} element
+ */
+function highlightInvalid(element) {
+  if (!element.checkValidity())
+    element.parentNode.classList.add("input-invalid");
+  else element.parentNode.classList.remove("input-invalid");
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#SubtasksDone">SubtasksDone</a></li><li><a href="global.html#addTaskInit">addTaskInit</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#awaitFeedback">awaitFeedback</a></li><li><a href="global.html#checkboxRevertToggle">checkboxRevertToggle</a></li><li><a href="global.html#checkboxToggle">checkboxToggle</a></li><li><a href="global.html#closeAddContactForm">closeAddContactForm</a></li><li><a href="global.html#closeAddTaskPopup">closeAddTaskPopup</a></li><li><a href="global.html#closeEditContactForm">closeEditContactForm</a></li><li><a href="global.html#closeEditSavedSubtask">closeEditSavedSubtask</a></li><li><a href="global.html#closeEditSubtask">closeEditSubtask</a></li><li><a href="global.html#closeTaskCard">closeTaskCard</a></li><li><a href="global.html#closeThumbnailSubmenu">closeThumbnailSubmenu</a></li><li><a href="global.html#convertDueDates">convertDueDates</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createSubtaskListItem">createSubtaskListItem</a></li><li><a href="global.html#currentDraggedElementID">currentDraggedElementID</a></li><li><a href="global.html#currentDraggedElementINDEX">currentDraggedElementINDEX</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#disableBtnsDefault">disableBtnsDefault</a></li><li><a href="global.html#disablePrioBtns">disablePrioBtns</a></li><li><a href="global.html#done">done</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editModeSavedSubtask">editModeSavedSubtask</a></li><li><a href="global.html#editModeSubtask">editModeSubtask</a></li><li><a href="global.html#filterUsers">filterUsers</a></li><li><a href="global.html#focusEditSavedSubtask">focusEditSavedSubtask</a></li><li><a href="global.html#generateUniqueID">generateUniqueID</a></li><li><a href="global.html#getSelectedUser">getSelectedUser</a></li><li><a href="global.html#getTaskById">getTaskById</a></li><li><a href="global.html#getTaskCategorieList">getTaskCategorieList</a></li><li><a href="global.html#getTaskStatusByIndex">getTaskStatusByIndex</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#greetUser">greetUser</a></li><li><a href="global.html#hideContactDetails">hideContactDetails</a></li><li><a href="global.html#hideMore">hideMore</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#highlightActiveContact">highlightActiveContact</a></li><li><a href="global.html#highlightInvalid">highlightInvalid</a></li><li><a href="global.html#highlightLatestContact">highlightLatestContact</a></li><li><a href="global.html#inProgress">inProgress</a></li><li><a href="global.html#incertSubtask">incertSubtask</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#loadBoard">loadBoard</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadEditContactValues">loadEditContactValues</a></li><li><a href="global.html#loadEditTaskForm">loadEditTaskForm</a></li><li><a href="global.html#loadMoveTo">loadMoveTo</a></li><li><a href="global.html#loadNoSubtasksInThumbnail">loadNoSubtasksInThumbnail</a></li><li><a href="global.html#loadPrioTasks">loadPrioTasks</a></li><li><a href="global.html#loadSearchResult">loadSearchResult</a></li><li><a href="global.html#loadSubtasksInCard">loadSubtasksInCard</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTaskDoneHTML">noTaskDoneHTML</a></li><li><a href="global.html#noTaskToDoHTML">noTaskToDoHTML</a></li><li><a href="global.html#normalDate">normalDate</a></li><li><a href="global.html#normalDateEditTask">normalDateEditTask</a></li><li><a href="global.html#openAddTaskPopup">openAddTaskPopup</a></li><li><a href="global.html#openTaskCard">openTaskCard</a></li><li><a href="global.html#openThumbnailSubmenu">openThumbnailSubmenu</a></li><li><a href="global.html#overwriteAddTaskFormCSS">overwriteAddTaskFormCSS</a></li><li><a href="global.html#prioButtonLow">prioButtonLow</a></li><li><a href="global.html#prioButtonMedium">prioButtonMedium</a></li><li><a href="global.html#prioButtonUpdate">prioButtonUpdate</a></li><li><a href="global.html#prioButtonUrgent">prioButtonUrgent</a></li><li><a href="global.html#removeAssignedUser">removeAssignedUser</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#renderAddTaskForm">renderAddTaskForm</a></li><li><a href="global.html#renderAssignedUserIcons">renderAssignedUserIcons</a></li><li><a href="global.html#renderAssignedUsers">renderAssignedUsers</a></li><li><a href="global.html#renderAwaitFeedback">renderAwaitFeedback</a></li><li><a href="global.html#renderCategoriesList">renderCategoriesList</a></li><li><a href="global.html#renderContactDetails">renderContactDetails</a></li><li><a href="global.html#renderContactDetailsMobile">renderContactDetailsMobile</a></li><li><a href="global.html#renderContactInitials">renderContactInitials</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderDone">renderDone</a></li><li><a href="global.html#renderEditModeSavedSubtask">renderEditModeSavedSubtask</a></li><li><a href="global.html#renderEditTaskForm">renderEditTaskForm</a></li><li><a href="global.html#renderFullUsersList">renderFullUsersList</a></li><li><a href="global.html#renderHTMLUsersList">renderHTMLUsersList</a></li><li><a href="global.html#renderInProgress">renderInProgress</a></li><li><a href="global.html#renderMetricValues">renderMetricValues</a></li><li><a href="global.html#renderNoTaskDone">renderNoTaskDone</a></li><li><a href="global.html#renderNoTaskToDo">renderNoTaskToDo</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtask">renderSubtask</a></li><li><a href="global.html#renderSubtaskListItem">renderSubtaskListItem</a></li><li><a href="global.html#renderSubtaskProgressBar">renderSubtaskProgressBar</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#renderTaskCard">renderTaskCard</a></li><li><a href="global.html#renderTaskCardBoard">renderTaskCardBoard</a></li><li><a href="global.html#renderTaskForm">renderTaskForm</a></li><li><a href="global.html#renderTaskUserIcon">renderTaskUserIcon</a></li><li><a href="global.html#renderTaskUses">renderTaskUses</a></li><li><a href="global.html#renderThumbnailCard">renderThumbnailCard</a></li><li><a href="global.html#renderToDo">renderToDo</a></li><li><a href="global.html#renderUserIconDropdown">renderUserIconDropdown</a></li><li><a href="global.html#resetAddContactForm">resetAddContactForm</a></li><li><a href="global.html#resetEditContactForm">resetEditContactForm</a></li><li><a href="global.html#resetSubtaskInput">resetSubtaskInput</a></li><li><a href="global.html#returnContactListCategory">returnContactListCategory</a></li><li><a href="global.html#returnContactListEntry">returnContactListEntry</a></li><li><a href="global.html#returnNextDueDate">returnNextDueDate</a></li><li><a href="global.html#returnNumberOfTasks">returnNumberOfTasks</a></li><li><a href="global.html#returnTotalTasks">returnTotalTasks</a></li><li><a href="global.html#searchTask">searchTask</a></li><li><a href="global.html#selectOption">selectOption</a></li><li><a href="global.html#selectOptionCat">selectOptionCat</a></li><li><a href="global.html#selectSubtaskStatus">selectSubtaskStatus</a></li><li><a href="global.html#showAddContactForm">showAddContactForm</a></li><li><a href="global.html#showAddedTaskMsg">showAddedTaskMsg</a></li><li><a href="global.html#showContactCreatedNotification">showContactCreatedNotification</a></li><li><a href="global.html#showEditContactForm">showEditContactForm</a></li><li><a href="global.html#showMore">showMore</a></li><li><a href="global.html#showPopUp">showPopUp</a></li><li><a href="global.html#sortContactsAtoZ">sortContactsAtoZ</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#submitTask">submitTask</a></li><li><a href="global.html#taskCardBoard_HTML">taskCardBoard_HTML</a></li><li><a href="global.html#taskFormClear">taskFormClear</a></li><li><a href="global.html#thumbnailCard_HTML">thumbnailCard_HTML</a></li><li><a href="global.html#toDo">toDo</a></li><li><a href="global.html#toggleCategoriesSelect">toggleCategoriesSelect</a></li><li><a href="global.html#toggleCustomSelect">toggleCustomSelect</a></li><li><a href="global.html#toggleInputUsers">toggleInputUsers</a></li><li><a href="global.html#updateSavedSubtask">updateSavedSubtask</a></li><li><a href="global.html#userDropDownClick">userDropDownClick</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jan 16 2024 16:59:51 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

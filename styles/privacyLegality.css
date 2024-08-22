@@ -1,0 +1,12 @@
+.content {
+    padding-inline: 68px;
+    padding-block: 64px;
+}
+
+main h1 {
+    font-size: 61px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 64px;
+}
+

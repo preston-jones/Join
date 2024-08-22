@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join | Login</title>
+    <link rel="stylesheet" href="./styles/login.css">
+    <link rel="stylesheet" href="./assets/fonts/inter.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <div class="content dp-flex flex-column">
+        <!-- login logo -->
+        
+        <img class="login-logo-register" src="./assets/img/logo_dark.svg" alt="">
+
+        <!-- switch to sign up -->
+        <div signupframe class="switch-to-sign-up_frame dp-flex">
+            <p id="switch-signIn-signUp_paragraph">Allready have an Account?</p>
+            <button id="handle-signIn-signUp_button" onclick="goToSite(1)" class="button">Log in</button>
+        </div>
+
+        <div class="card_frame dp-flex flex-column">
+           
+            <!-- sing up card -->
+            <div id="sign-up-card_frame" class="signUp-card-frame">
+
+                <img onclick="goToSite(1)" src="./assets/img/icons/arrow-left-line.svg" alt="back to login"
+                    class="back-to-login">
+
+                <div id="sign-up_card" class="signUp-card dp-flex flex-column">
+                    <div style="gap: 32px;" class="dp-flex flex-column">
+                        <!-- headline -->
+                        <div class="headline-frame dp-flex flex-column">
+                            <h1>Sign up</h1>
+                            <div class="headline-underline"></div>
+                        </div>
+
+                        <!-- form -->
+                        <form onsubmit="registerNewUser(); return false;" class="dp-flex flex-column" action="#">
+                            <div style="gap: 24px;" class="input-frame dp-flex flex-column">
+                                <!-- name -->
+                                <div style="width: 422px;" class="input-container" formValidation>
+                                    <input id="register_name-input" required class="input-field" type="text"
+                                        placeholder="name">
+                                    <img src="./assets/img/icons/person-input.svg" alt="name">
+                                </div>
+                                <!-- email -->
+                                <div style="width: 422px;" class="input-container" formValidation>
+                                    <input id="register_email-input" required class="input-field" type="email"
+                                        placeholder="email">
+                                    <img src="./assets/img/icons/mail.svg" alt="mail">
+                                </div>
+                                <!-- password -->
+                                <div style="width: 422px;" class="input-container" formValidation>
+                                    <input id="register_password-input" required class="input-field password-input"
+                                        type="password" placeholder="password">
+                                    <img class="pw-img" src="./assets/img/icons/lock.svg" alt="password">
+                                    <img onclick="handleVisibility()" class="password-eye d-none visible-img visibility-off"
+                                        src="./assets/img/icons/visibility_off.svg" alt="">
+                                </div>
+                                <!-- password confirm -->
+                                <div style="width: 422px;" class="input-container" formValidation>
+                                    <input id="register_confirm-input" required class="input-field password-input"
+                                        type="password" placeholder="confirm password">
+                                    <img class="pw-img" src="./assets/img/icons/lock.svg" alt="confirm password">
+                                    <img onclick="handleVisibility()" class="password-eye d-none visible-img visibility-off"
+                                        src="./assets/img/icons/visibility_off.svg" alt="">
+                                </div>
+                            </div>
+
+                            <div id="register_warning" class="warning"></div>
+
+                            <div id="privacy_frame" class="dp-flex">
+                                <input required class="checkbox" style="margin-right: 6px;" type="checkbox"
+                                    id="accaptPolicy" onclick="handleSignUpButton()">
+                                <p>I accept the <a onclick="cameFromLogin('privacy')" class="link" href="#">Privacy policy</a></p>
+                            </div>
+
+                            <button submitButton style="margin-top: 12px;" id="signUp-button" class="button d-none"
+                                type="submit">Sign
+                                up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="dp-flex policy_frame">
+            <a onclick="cameFromLogin('privacy')" class="policy-link" href="#">Privacy Policy</a>
+            <a onclick="cameFromLogin('legality')" class="policy-link" href="#">Legal notice</a>
+        </div>
+
+    </div>
+        <script src="./js/login.js"></script>
+    <script src="./js/storage.js"></script>
+</body>
+
+</html>

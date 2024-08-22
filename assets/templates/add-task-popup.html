@@ -1,0 +1,130 @@
+<img src="assets/img/icons/cancel.svg" onclick="closeAddTaskPopup()">
+    <form class="add-task-form" id="add-task-form-container" action="task_card.html" method="get"
+        onsubmit="event.preventDefault(); createNewTask();">
+        <!-- Header Section -->
+        <div class="header-div">
+            <h1>Add Task</h1>
+        </div>
+        <div class="content-add-task">
+            <div class="title-description-div">
+                <!-- Task Title -->
+                <div class="task-categories title">
+                    <span>Title*</span>
+                    <div class="input-container">
+                        <input type="text" id="task-title" required class="input-field" placeholder="Enter a title">
+                    </div>
+                </div>
+                <div class="task-categories description">
+                    <span>Description</span>
+                    <div class="input-container">
+                        <textarea type="text" required id="task-description" class="input-field"
+                            placeholder="Enter a Description">
+                                </textarea>
+                    </div>
+                </div>
+                <div class="task-categories users">
+                    <span>Assigned to</span>
+                    <div class="custom-select" id="select-users">
+                        <button class="dropdown select-button" role="combobox" onclick="filterUsers();"
+                            id="user-select-button">
+                            <input placeholder="Select contacts to assign" type="text" autocomplete="off"
+                                class="selected-value" id="search" onclick="filterUsers(); toggleInputUsers()"
+                                onchange="filterUsers()">
+                            <img class="dropdown-icon" id="dropdown-icon-users"
+                                src="/assets/img/icons/arrow_drop_downaa.svg" alt="dropdown icon"
+                                onclick="toggleCustomSelect()">
+                        </button>
+                        <div>
+                            <span id="list"></span>
+                        </div>
+                        <ul class="dropdown d-none-ni" role="listbox" id="select-dropdown-users">
+                        </ul>
+                    </div>
+                    <div class="selected-users-container" id="selected-users-container">
+                    </div>
+                </div>
+            </div>
+            <div class="borderline"></div>
+            <div class="date-prio-container">
+                <div class="task-categories date">
+                    <span>Due date</span>
+                    <input type="date" id="task-date" class="input-field date-task-inputfield" placeholder="dd/mm/yy">
+                </div>
+                <div class="task-categories prio-categories">
+                    <span>Prio</span>
+                    <div class="prio-btn-container">
+                        <button onclick="prioButtonUrgent()" class="prio urgent-btn" id="urgent-btn">
+                            <span>Urgent</span>
+                            <img class="prio-icon" src="/assets/img/icons/Prio alta.svg" alt="">
+                        </button>
+                        <button type="button" value="urgent" class="prio urgent-btn-clicked d-none"
+                            id="urgent-btn-clicked">
+                            <span>Urgent</span>
+                            <img class="prio-icon" src="/assets/img/icons/Prio alta-white.svg" alt="">
+                        </button>
+                        <button onclick="prioButtonMedium()" class="prio medium-btn d-none" id="medium-btn">
+                            <span>Medium</span>
+                            <img class="prio-icon" src="/assets/img/icons/Prio media.svg" alt="Medium Prio Icon">
+                        </button>
+                        <button type="button" value="medium" class="prio medium-btn-clicked" id="medium-btn-clicked">
+                            <span>Medium</span>
+                            <img class="prio-icon" src="assets/img/icons/Prio media-white.svg" alt="Medium Prio Icon">
+                        </button>
+                        <button onclick="prioButtonLow()" class="prio low-btn" id="low-btn">
+                            <span>Low</span>
+                            <img class="prio-icon" src="/assets/img/icons/Prio baja.svg" alt="Low Prio Icon">
+                        </button>
+                        <button type="button" value="low" class="prio low-btn-clicked d-none" id="low-btn-clicked">
+                            <span>Low</span>
+                            <img class="prio-icon" src="/assets/img/icons/Prio baja-white.svg" alt="Low Prio Icon">
+                        </button>
+                    </div>
+                </div>
+                <div class="task-categories categories">
+                    <span>Categories</span>
+                    <div class="custom-select">
+                        <button class="dropdown select-button" role="combobox" id="categories-select-button"
+                            onclick="toggleCategoriesSelect();">
+                            <input placeholder="Select task category" type="text" autocomplete="off"
+                                class="selected-value" id="selected-category" readonly>
+                            <img class="dropdown-icon" id="dropdown-icon-categories"
+                                src="/assets/img/icons/arrow_drop_downaa.svg" alt="dropdown icon">
+                        </button>
+                        <ul id="categories-list" class="dropdown d-none-ni" role="listbox">
+                        </ul>
+                    </div>
+                </div>
+                <div class="task-categories subtask">
+                    <span>Subtasks</span>
+                    <div class="input-container" id="subtask-input-container">
+                        <input class="input-field" type="text" id="subtask-input" placeholder="Add new subtask"
+                            onclick="editModeSubtask()" ondblclick="incertSubtask()">
+                        <img class="subtask-img icon" id="subtask-plus-icon" src="/assets/img/icons/Property 1=add.svg"
+                            alt="" onclick="editModeSubtask()">
+                        <img class="subtask-img icon d-none-ni" id="subtask-close-icon"
+                            src="/assets/img/icons/Property 1=close.svg" alt="" onclick="closeEditSubtask()">
+                        <img class="subtask-img icon d-none-ni" id="subtask-vector-icon"
+                            src="/assets/img/icons/Vector 19.svg">
+                        <img class="subtask-img icon d-none-ni" id="subtask-check-icon"
+                            src="/assets/img/icons/Property 1=check.svg" alt="" onclick="incertSubtask()">
+                    </div>
+                    <ul id="select-subtask" class=""></ul>
+                    <div id="select-subtask-edit" class=""></div>
+                </div>
+            </div>
+        </div>
+        <div class="create-delete-task-container">
+            <div class="create-delete-task-btn" id="create-delete-task-btns-container">
+                <button id="reset" type="reset" class="button-secondary-w-icon add-task-btn">
+                    Clear
+                    <img src="/assets/img/icons/cancel.svg" id="clearIconHover" class="clearIconDefault">
+                    <img src="/assets/img/icons/iconoir_cancel.svg" id="clearIconDefault"
+                        class="clearIconBlue d-none-ni">
+                </button>
+                <button class="button-w-icon" type="submit" value="Submit">
+                    Create Task
+                    <img src="./assets/img/icons/check.svg">
+                </button>
+            </div>
+        </div>
+    </form>
