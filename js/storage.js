@@ -1,18 +1,25 @@
-const STORAGE_TOKEN = 'PU8XMPB7URSE6FTX5S08BD2P3NPKTZF3KB87EMNH';
-const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
+// const STORAGE_TOKEN = 'PU8XMPB7URSE6FTX5S08BD2P3NPKTZF3KB87EMNH';
+// const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
+const STORAGE_URL = 'https://join-4cacd-default-rtdb.europe-west1.firebasedatabase.app/';
 
 
 async function setItem(key, value) {
-    const payload = { key, value, token: STORAGE_TOKEN };
-    return fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) })
-        .then(res => res.json());
+    const url = `${STORAGE_URL}${key}.json`;
+    payload = JSON.stringify(value);
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    // .then(res => res.json());
 }
 
 async function getItem(key) {
-    const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-    // return fetch(url).then(res => res.json());
-    return await fetch(url)
-        .then(res => res.json().then(res => res.data.value));
+    const url = `${STORAGE_URL}${key}.json`;
+    let response = await fetch(url);        
+    return response.json();
 }
 
 async function resetRemote(key) {

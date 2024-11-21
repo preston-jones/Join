@@ -34,7 +34,9 @@ function loadBoard() {
 /** This asynchronous function loads all the task objects from the server into a local array, after formated into JSON format.
 */
 async function getTasks() {
-    allTasksFromStorage = JSON.parse(await getItem("tasks"));
+    let taskData = await getItem("tasks");    
+    allTasksFromStorage = JSON.parse(taskData);
+    console.log(allTasksFromStorage);
 }
 
 
@@ -57,7 +59,7 @@ function renderToDo() {
     toDo = allTasksFromStorage.filter(t => t['taskStatus'] == 0);
 
     if (toDo.length == 0) {
-        renderNoTaskToDo('column_todo');
+        renderNoTask('column_todo', 'To Do');
     }
     else {
         for (let index = 0; index < toDo.length; index++) {
@@ -76,7 +78,7 @@ function renderInProgress() {
     inProgress = allTasksFromStorage.filter(t => t['taskStatus'] == 1);
 
     if (inProgress.length == 0) {
-        renderNoTaskToDo('column_in_progress');
+        renderNoTask('column_in_progress', 'in Progress');
     }
     else {
         for (let index = 0; index < inProgress.length; index++) {
@@ -95,7 +97,7 @@ function renderAwaitFeedback() {
     awaitFeedback = allTasksFromStorage.filter(t => t['taskStatus'] == 2);
 
     if (awaitFeedback.length == 0) {
-        renderNoTaskToDo('column_await_feedback');
+        renderNoTask('column_await_feedback', 'awaits Feedback');
     }
     else {
         for (let index = 0; index < awaitFeedback.length; index++) {
@@ -114,7 +116,7 @@ function renderDone() {
     done = allTasksFromStorage.filter(t => t['taskStatus'] == 3);
 
     if (done.length == 0) {
-        renderNoTaskDone('column_done');
+        renderNoTask('column_done', 'Done');
     }
     else {
         for (let index = 0; index < done.length; index++) {
@@ -167,11 +169,13 @@ function startDragging(index, element_taskID) {
  * The function changes the taskStatus value of the current task object after it is dropped.
  * @param {number} task_status - The status value of the task object.
  */
-function moveTo(task_status) {
+function moveTo(task_status, columnId) {
     event.stopPropagation();
     let currentDraggedElement = allTasksFromStorage.filter(t => t['taskID'] == currentDraggedElementID);
     currentDraggedElement[0]['taskStatus'] = task_status;
+    
     setItem('tasks', allTasksFromStorage);
+    removeHighlight(columnId);
     loadBoard();
 }
 
@@ -190,7 +194,7 @@ function highlight(id) {
  * @param {string} id - ID of the Html element from which the class is removed.
  */
 function removeHighlight(id) {
-    document.getElementById(id).classList.remove('drag-area-highlight');
+    document.getElementById(id).classList.remove('drag_area_highlight');
 }
 
 
@@ -198,17 +202,8 @@ function removeHighlight(id) {
  * This function loads the Html template for the notifacation "No Task To Do" in an empty column of category.
  * @param {string} category - ID of the column of category.
  */
-function renderNoTaskToDo(category) {
-    document.getElementById(category).innerHTML += noTaskToDoHTML();
-}
-
-
-/**
- * This function loads the Html template for the notifacation "No Task Done" in the empty column of the category "Done".
- * @param {string} category - ID of the column "Done".
- */
-function renderNoTaskDone(category) {
-    document.getElementById(category).innerHTML += noTaskDoneHTML();
+function renderNoTask(category, categoryName) {    
+    document.getElementById(category).innerHTML += noTaskHTML(categoryName);
 }
 
 

@@ -132,5 +132,5 @@ function greetUser() {
   if (time >= 16)
     document.getElementById("greeting-message").innerHTML = "Good Evening,";
 
-  document.getElementById("user-name").innerHTML = currentUser;
+  document.getElementById("user-name").innerHTML = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
 }

@@ -69,7 +69,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="column_content" id="column_todo" ondrop="moveTo(0)"
+                    <div class="column_content" id="column_todo" ondrop="moveTo(0, 'column_todo')"
                         ondragover="allowDrop(event); highlight('column_todo')"
                         ondragleave="removeHighlight('column_todo')">
                     </div>
@@ -86,7 +86,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="column_content" id="column_in_progress" ondrop="moveTo(1)"
+                    <div class="column_content" id="column_in_progress" ondrop="moveTo(1, 'column_in_progress')"
                         ondragover="allowDrop(event); highlight('column_in_progress')"
                         ondragleave="removeHighlight('column_in_progress')">
                     </div>
@@ -103,7 +103,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="column_content" id="column_await_feedback" ondrop="moveTo(2)"
+                    <div class="column_content" id="column_await_feedback" ondrop="moveTo(2, 'column_await_feedback')"
                         ondragover="allowDrop(event); highlight('column_await_feedback')"
                         ondragleave="removeHighlight('column_await_feedback')">
                     </div>
@@ -112,7 +112,7 @@
                     <div class="categories">
                         <p>Done</p>
                     </div>
-                    <div class="column_content" id="column_done" ondrop="moveTo(3)"
+                    <div class="column_content" id="column_done" ondrop="moveTo(3, 'column_done')"
                         ondragover="allowDrop(event); highlight('column_done')"
                         ondragleave="removeHighlight('column_done')">
                     </div>

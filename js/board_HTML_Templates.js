@@ -105,19 +105,8 @@ function thumbnailCard_HTML(index, element) {
  * Html Template to render a Notification in the board column.
  * @returns Returns the Html code for the notification, that the Board Columns titled "Todo, In progress, Await Feedback" are empty of task objects.
  */
-function noTaskToDoHTML() {
+function noTaskHTML(categoryName) {
     return `<div class="no_task">
-                <p>No Task To Do</p>
-            </div>`
-}
-
-
-/**
- * Html Template to render a Notification in the board column.
- * @returns Returns the Html code for the notification, that the Board Column titled "Done" is empty of task objects.
- */
-function noTaskDoneHTML() {
-    return `<div class="no_task">
-                <p>No Task Done</p>
+                <p>No Task ${categoryName}</p>
             </div>`
 }

@@ -158,6 +158,7 @@ main {
 .categories_container {
     display: flex;
     width: 100%;
+    height: 100%;
     padding: 0px 64px;
     justify-content: space-between;
     align-items: flex-start;
@@ -252,6 +253,7 @@ main {
     height: 100%;
     display: flex;
     justify-content: flex-start;
+    border: 3px dotted transparent;
 }
 
 .no_task {
@@ -285,7 +287,7 @@ main {
 /* Drag and Drop */
 
 .drag_area_highlight {
-    background-color: rgba(226, 226, 226, 0.2);
+    background-color: rgba(226, 226, 226, 0.4);
     border: 3px dotted rgba(182, 182, 182, 0.2);
     border-radius: 24px;
 }
