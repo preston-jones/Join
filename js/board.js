@@ -34,7 +34,7 @@ function loadBoard() {
 /** This asynchronous function loads all the task objects from the server into a local array, after formated into JSON format.
 */
 async function getTasks() {
-    let taskData = await getItem("tasks");    
+    let taskData = await getItem("tasks");
     allTasksFromStorage = JSON.parse(taskData);
     console.log(allTasksFromStorage);
 }
@@ -173,7 +173,7 @@ function moveTo(task_status, columnId) {
     event.stopPropagation();
     let currentDraggedElement = allTasksFromStorage.filter(t => t['taskID'] == currentDraggedElementID);
     currentDraggedElement[0]['taskStatus'] = task_status;
-    
+
     setItem('tasks', allTasksFromStorage);
     removeHighlight(columnId);
     loadBoard();
@@ -194,7 +194,14 @@ function highlight(id) {
  * @param {string} id - ID of the Html element from which the class is removed.
  */
 function removeHighlight(id) {
-    document.getElementById(id).classList.remove('drag_area_highlight');
+    let column = document.getElementById(id);
+    if (column) {
+        if (column.classList.contains('drag_area_highlight')) {
+            column.classList.remove('drag_area_highlight');
+        }
+    } else {
+        console.error(`Element with id ${id} not found`);
+    }
 }
 
 
@@ -202,7 +209,7 @@ function removeHighlight(id) {
  * This function loads the Html template for the notifacation "No Task To Do" in an empty column of category.
  * @param {string} category - ID of the column of category.
  */
-function renderNoTask(category, categoryName) {    
+function renderNoTask(category, categoryName) {
     document.getElementById(category).innerHTML += noTaskHTML(categoryName);
 }
 
@@ -241,13 +248,13 @@ function closeThumbnailSubmenu(taskID, taskStatus) {
  */
 function loadMoveTo(taskID, taskStatus) {
     let taskStatusArray = [
-        {'name': 'To Do', 'taskStatus': 0},
-        {'name': 'In Progress', 'taskStatus': 1},
-        {'name': 'Await Feedback', 'taskStatus': 2},
-        {'name': 'Done', 'taskStatus': 3}
+        { 'name': 'To Do', 'taskStatus': 0 },
+        { 'name': 'In Progress', 'taskStatus': 1 },
+        { 'name': 'Await Feedback', 'taskStatus': 2 },
+        { 'name': 'Done', 'taskStatus': 3 }
     ];
     for (let index = 0; index < taskStatusArray.length; index++) {
-        if (taskStatusArray[index].taskStatus!==taskStatus) {
+        if (taskStatusArray[index].taskStatus !== taskStatus) {
             currentDraggedElementID = taskID;
             document.getElementById(`task_card_thumbnail_submenu_link_container_${taskID}`).innerHTML += `<div class="task_card_thumbnail_submenu_link" onclick="moveTo(${taskStatusArray[index].taskStatus})">&#8226 ${taskStatusArray[index].name}</div>`;
         }
@@ -314,8 +321,8 @@ function renderAssignedUsers(element) {
             <div class="acc-initials task_card_thumbnail_profile_badge_frame more_users">+${moreUsers}</div>`;
         }
         else {
-            document.getElementById(`task_card_thumbnail_assigned_users_container_${ element.taskID }`).innerHTML += `
-            <div class="acc-initials task_card_thumbnail_profile_badge_frame" style = "background: ${element.assignedUsers[i].bgColor};"> ${ returnInitials(element.assignedUsers[i].name) }</div> `;
+            document.getElementById(`task_card_thumbnail_assigned_users_container_${element.taskID}`).innerHTML += `
+            <div class="acc-initials task_card_thumbnail_profile_badge_frame" style = "background: ${element.assignedUsers[i].bgColor};"> ${returnInitials(element.assignedUsers[i].name)}</div> `;
         }
     }
 }
@@ -345,7 +352,7 @@ function loadSubtasksInCard(taskID, subtasks) {
  */
 function loadNoSubtasksInThumbnail(element) {
     if (element.subtasks.length == 0) {
-        document.getElementById(`task_card_thumbnail_progress_${ element.taskID }`).innerHTML = `<div class="no_subtasks">No Subtasks</div>`;
+        document.getElementById(`task_card_thumbnail_progress_${element.taskID}`).innerHTML = `<div class="no_subtasks">No Subtasks</div>`;
     }
 }
 

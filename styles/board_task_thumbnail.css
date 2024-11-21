@@ -172,7 +172,6 @@
 
 .task_card_thumbnail_progress {
     display: flex;
-    padding: 0px 8px 2px 0px;
     align-items: center;
     gap: 11px;
 

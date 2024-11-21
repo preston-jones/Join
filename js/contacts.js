@@ -8,6 +8,7 @@ async function init() {
   await loadContacts();
   renderContactList();
   setCurrentPageLinkActive("contacts");
+
 }
 
 /**
@@ -15,8 +16,10 @@ async function init() {
  * remote storage - using getItem function - and saves them to the contacts array
  */
 async function loadContacts() {
+  let contactsData = await getItem("contacts");
   try {
-    contacts = JSON.parse(await getItem("contacts"));
+    contacts = JSON.parse(contactsData);
+    console.log(contacts);
   } catch (e) {
     console.warn("no contacts found on server");
   }
@@ -68,8 +71,7 @@ function returnContactListCategory(character) {
 function returnContactListEntry(id) {
   let contact = contacts[id];
   return `
-    <div id="contact-id-${
-      contact["id"]
+    <div id="contact-id-${contact["id"]
     }" class="contact-entry" onclick="renderContactDetails(${id}), highlightActiveContact(this)">
     ${renderContactInitials(returnInitials(contact["name"]), id)}
     <div>
@@ -113,6 +115,8 @@ function highlightActiveContact(element) {
  */
 function sortContactsAtoZ() {
   sortedContacts = contacts;
+  console.log(sortedContacts);
+
   sortedContacts.sort((a, b) => {
     const nameA = a.name.toUpperCase();
     const nameB = b.name.toUpperCase();
@@ -202,7 +206,7 @@ async function createNewContact() {
     bgColor: backgroundColors[randomBgColorIndex],
   });
 
-  await setItem("contacts", JSON.stringify(contacts));
+  await setItem("contacts", contacts);
 
   renderContactList();
   highlightLatestContact();
@@ -271,7 +275,7 @@ async function showContactCreatedNotification() {
  */
 async function deleteContact(id) {
   contacts.splice(id, 1);
-  await setItem("contacts", JSON.stringify(contacts));
+  await setItem("contacts", contacts);
   document.getElementById("contact-details").classList.add("d-none");
   renderContactList();
 
@@ -322,7 +326,7 @@ async function editContact(id) {
     bgColor: contacts[id]["bgColor"],
   };
 
-  await setItem("contacts", JSON.stringify(contacts));
+  await setItem("contacts", contacts);
   closeEditContactForm();
   renderContactList();
   renderContactDetails(id);
