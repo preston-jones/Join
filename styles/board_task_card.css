@@ -26,11 +26,12 @@
     display: flex;
     justify-content: flex-start;
     width: 525px;
-    height: 850px;
+    /* min-height: 850px; */
+    max-height: calc(100% - 5.5rem);
     padding: 48px 40px;
     border-radius: 30px;
     background: #FFF;
-    font-size: 18px;
+    font-size: 1.1rem;
 }
 
 .task_card_content {
@@ -66,6 +67,7 @@
 
 .task_card_content span {
     margin: 0;
+    font-size: 1.1rem;
 }
 
 .task_card_header {
@@ -93,6 +95,9 @@
 
 .task_card_title h1 {
     margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    overflow-wrap: break-word;
 }
 
 .task_card_date {

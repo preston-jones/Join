@@ -313,14 +313,6 @@ function goToSite(p) {
     }
 }
 
-function handleSignUpButton() {
-    let button = document.getElementById('signUp-button');
-    if (button.classList.contains('d-none')) {
-        button.classList.remove('d-none');
-    } else {
-        button.classList.add('d-none');
-    }
-}
 
 function lookIfWindowIs670pxToOptimizeMobileVersion() {
     if (window.innerWidth <= 670 && document.querySelector('.switch-to-sign-up_frame').hasAttribute("signupframe")) {

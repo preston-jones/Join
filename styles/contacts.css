@@ -113,6 +113,7 @@ main {
   padding-right: 30px;
   margin: 0;
 }
+
 .contact-header p {
   font-size: 27px;
   color: #2a3647;
@@ -169,8 +170,7 @@ main {
 }
 
 .contact-details button:hover img {
-  filter: brightness(0) saturate(100%) invert(66%) sepia(47%) saturate(2891%)
-    hue-rotate(165deg) brightness(92%) contrast(93%);
+  filter: brightness(0) saturate(100%) invert(66%) sepia(47%) saturate(2891%) hue-rotate(165deg) brightness(92%) contrast(93%);
 }
 
 .contact-details b {
@@ -417,6 +417,7 @@ main {
   from {
     right: -200px;
   }
+
   to {
     right: 10px;
   }
@@ -471,6 +472,7 @@ main {
   .contact-form-left {
     width: 30%;
   }
+
   .contact-form-left h1 {
     font-size: 47px;
   }
@@ -508,18 +510,20 @@ main {
     display: initial;
   }
 
-  .contact-container-btn {
+  /* .contact-container-btn {
     display: initial;
-  }
+    bottom: calc(20px + 80px);
+    right: 20px;
+  } */
 
   .contact-list {
     width: 100%;
     padding-top: 0;
   }
 
-  .add-new-contact {
+  /* .add-new-contact {
     display: none;
-  }
+  } */
 
   .contact-details {
     margin-left: 24px;
@@ -551,9 +555,11 @@ main {
     border-bottom-left-radius: 0px;
     border-top-right-radius: 30px;
   }
+
   .contact-form-left img {
     display: none;
   }
+
   .contact-form-left p {
     font-size: 20px;
   }
@@ -595,8 +601,7 @@ main {
   }
 
   .close-btn-container img {
-    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7410%)
-      hue-rotate(12deg) brightness(120%) contrast(94%);
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7410%) hue-rotate(12deg) brightness(120%) contrast(94%);
   }
 
   /* --- contact form animation mobile---  */
@@ -636,10 +641,26 @@ main {
   .contact-form-right .input-container input {
     max-width: 180px;
   }
+
+  .add-new-contact {
+    display: none;
+  }
+
+  .contact-container-btn {
+    display: initial;
+    bottom: calc(20px + 80px);
+    right: 20px;
+  }
 }
 
 @media screen and (max-height: 850px) {
   .contact-form-img-container {
     display: none;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .acc-initials {
+    margin-right: -4px;
   }
 }

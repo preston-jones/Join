@@ -1,5 +1,5 @@
 span {
-    font-size: 21px;
+    font-size: 1.1rem;
     margin-top: 5px;
     margin-bottom: 8px;
 }
@@ -27,6 +27,7 @@ span {
     justify-content: flex-start;
     align-items: flex-start;
     padding-bottom: 100px;
+    width: 100%;
 }
 
 #add-task-placeholder{
@@ -42,6 +43,7 @@ span {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 }
 
 .title-description-div {
@@ -271,7 +273,7 @@ input:focus-visible{
 
 .custom-select {
     position: relative;
-    max-width: 400px;
+    max-width: 440px;
     width: 100%;
     font-size: 1.15rem;
 }
@@ -551,14 +553,14 @@ input:focus-visible{
         font-size: 16px;
     }
 
-    .custom-select {
+    /* .custom-select {
         width: auto;
         max-width: none;
-    }
+    } */
         
-    .select-button {
+    /* .select-button {
         width: auto;
-    }
+    } */
 
     .dropdown {
         width: 296px;
@@ -575,7 +577,7 @@ input:focus-visible{
     .task-form-full{
         flex-wrap: wrap;
         align-items: flex-start;
-        /* width: 100%; */
+        width: 100%;
     }
 
     .width-small{

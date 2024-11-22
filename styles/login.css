@@ -96,6 +96,8 @@ body {
     background-color: white;
     border-radius: 30px;
     box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.03);
+    z-index: 99;
+    position: relative;
 }
 
 .login-card {
@@ -225,9 +227,13 @@ label {
 
 .back-to-login {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: clamp(2rem, 2.857vw + 1.429rem, 4rem);
+    left: clamp(1rem, 3.036vw + 0.393rem, 2.125rem);
     cursor: pointer;
+}
+
+.back-to-login:hover {
+    transform: scale(1.1);
 }
 
 /* Register Success Msg */
@@ -381,7 +387,6 @@ label {
         display: flex;
         justify-content: center;
         align-items: center;
-        position: relative;
     }
 
     #privacy_frame p {
@@ -390,7 +395,7 @@ label {
 
     .headline-frame h1 {
         margin-bottom: 8px;
-        font-size: 48px;
+        font-size: 42px;
     }
 
     #join-logo {
@@ -398,15 +403,18 @@ label {
     }
 
     .login-logo-register {
-        width: 80px;
-        height: 80px;
+        height: 56px;
+        width: auto;
+        object-fit: contain;
+        top: 16px;
+        left: 16px;
     }
 }
 
 @media (min-width: 670px) {
-    .back-to-login {
+    /* .back-to-login {
         display: none;
-    }
+    } */
 
     #mobile-login-logo {
         opacity: 0;
@@ -419,6 +427,10 @@ label {
         bottom: unset;
         left: unset;
         right: -40px;
+    }
+
+    .card_frame {
+        height: auto;
     }
 
     .switch-to-sign-up_frame button {
