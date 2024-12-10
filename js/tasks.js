@@ -112,7 +112,6 @@ function showAddedTaskMsg() {
 
 function getSelectedUser(){
     let user = document.getElementById('user-select').value;
-    //console.log('Selected user is ' + user);
     let userID = parseInt(user.replace('User', ''));
     assignUserList.push(userID);
 }
@@ -130,7 +129,6 @@ function prioButtonUpdate(pressed, btn) {
 
 function prioButtonUrgent(){
     taskPrio = PRIO_URG;
-    console.log('Task prio ' + taskPrio);
     prioButtonUpdate(true, 'urgent-btn');
     prioButtonUpdate(false, 'medium-btn');
     prioButtonUpdate(false, 'low-btn');
@@ -138,7 +136,6 @@ function prioButtonUrgent(){
 
 function prioButtonMedium(){
     taskPrio = PRIO_MDM;
-    //console.log('Task prio ' + taskPrio);
     prioButtonUpdate(false, 'urgent-btn');
     prioButtonUpdate(true, 'medium-btn');
     prioButtonUpdate(false, 'low-btn');
@@ -146,7 +143,6 @@ function prioButtonMedium(){
 
 function prioButtonLow(){
     taskPrio = PRIO_LOW;
-    // console.log('Task prio ' + taskPrio);
     prioButtonUpdate(false, 'urgent-btn');
     prioButtonUpdate(false, 'medium-btn');
     prioButtonUpdate(true, 'low-btn');
@@ -190,16 +186,14 @@ function renderUserIconDropdown(user){
 function renderHTMLUsersList(usersList){
     let dropdown = document.getElementById('select-dropdown-users');
     dropdown.innerHTML = '';
-    console.log('usersList ' + usersList);
     for (let index = 0; index < usersList.length; index++) {
         let user = usersList[index];
     
-        console.log('usersList ' + user["name"] + " user['id'] " +  user["id"] + " assignUserList " + assignUserList.length);
         if (assignUserList.length != 0) {
 
             const userIndex = assignUserList.findIndex((assignedUser) => assignedUser['id'] === user['id']);
             if (userIndex != -1) {
-                console.log('user ' + user['name'] + ' alredy is assigned');
+                alert('user ' + user['name'] + ' alredy is assigned');
                continue;
             }
         }
@@ -258,9 +252,7 @@ function selectOption(checkbox, id) {
         
         // Create a div element for the icon with initials using innerHTML
         const index = usersList.findIndex((user) => user.id === id);
-        console.log('usersList ' + usersList.length + ' index ' + index +  ' id ' + id );
         if (index != -1) {
-            console.log('id ' + id);
             assignUserList.push(usersList[index]);
         }
         renderUserIcon(id, usersList[index].bgColor, usersList[index].name);

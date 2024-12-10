@@ -19,7 +19,6 @@ async function loadContacts() {
   let contactsData = await getItem("contacts");
   try {
     contacts = JSON.parse(contactsData);
-    console.log(contacts);
   } catch (e) {
     console.warn("no contacts found on server");
   }
@@ -114,7 +113,6 @@ function highlightActiveContact(element) {
  */
 function sortContactsAtoZ() {
   sortedContacts = contacts;
-  console.log(sortedContacts);
 
   sortedContacts.sort((a, b) => {
     const nameA = a.name.toUpperCase();

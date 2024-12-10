@@ -36,7 +36,6 @@ function loadBoard() {
 async function getTasks() {
     let taskData = await getItem("tasks");
     allTasksFromStorage = JSON.parse(taskData);
-    console.log(allTasksFromStorage);
 }
 
 

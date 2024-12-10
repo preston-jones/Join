@@ -32,8 +32,6 @@ async function getRemote(key) {
     storedValue = JSON.parse(storedPromise);
 
     if (!isJSON(storedValue)) {
-        console.log('#### storedValue is not JSON');
-        console.log('All stored tasks are gone.');
         resetTasks(key)
     } else {
         values = storedValue;
@@ -50,7 +48,7 @@ function printAllTasks(tasks) {
 
 function printTask(task) {
     Object.keys(task).forEach(function (key) {
-        console.log(key + ": " + task[key]);
+        // console.log(key + ": " + task[key]);
     });
 }
 

@@ -197,7 +197,6 @@ function logIn() {
         rememberMe();
         sessionStorage.setItem('user', foundUser.name);
         sessionStorage.setItem('user-mail', foundUser.email)
-        console.log('login succesfull');
         window.location.href = 'summary.html';
     } else {
         logInWarning();
