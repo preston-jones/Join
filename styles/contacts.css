@@ -658,9 +658,3 @@ main {
     display: none;
   }
 }
-
-@media screen and (max-width: 750px) {
-  .acc-initials {
-    margin-right: -4px;
-  }
-}

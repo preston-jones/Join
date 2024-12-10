@@ -135,8 +135,14 @@ function renderDone() {
 async function searchTask() {
     await getTasks();
     inputSearchfield = document.getElementById('inputfield_find_task').value.toLowerCase();
-    let filteredTasks = allTasksFromStorage.filter(task => task['title'].toLowerCase().includes(inputSearchfield));
-    filteredTasks = allTasksFromStorage.filter(task => task['description'].toLowerCase().includes(inputSearchfield));
+    
+    let filteredTasks = allTasksFromStorage.filter(task => 
+        task['title'].toLowerCase().includes(inputSearchfield) || 
+        task['description'].toLowerCase().includes(inputSearchfield)
+        // task['assignedUsers'].toLowerCase().includes(inputSearchfield) ||
+        // task['subtasks'].toLowerCase().includes(inputSearchfield)
+    );
+    
     allTasksFromStorage = filteredTasks;
     loadBoard();
 }

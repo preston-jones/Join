@@ -8,7 +8,8 @@ main {
     top: 96px;
     left: 232px;
     width: calc(100% - 232px);
-    max-width: calc(90rem - 14.5rem);
+    /* max-width: calc(90rem - 14.5rem); */
+    max-width: calc(1920px - 232px);
     height: calc(100% - 96px);
     min-height: calc(100vh - 6rem);
     overflow-y: auto;
@@ -191,7 +192,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 16px;
 }
 

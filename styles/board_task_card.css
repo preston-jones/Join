@@ -76,6 +76,10 @@
     align-items: center;
     flex-direction: row;
     width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: #FFFFFF;
+    padding-bottom: 1rem;
 }
 
 .task_card_header_close_icon_frame {

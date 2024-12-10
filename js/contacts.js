@@ -59,8 +59,7 @@ function returnContactListCategory(character) {
     <p class="contact-category" 
     id="contact-category-${character}">
       ${character.toUpperCase()}
-    </p>
-  `;
+    </p>`;
 }
 
 /**
@@ -264,7 +263,7 @@ async function showContactCreatedNotification() {
   document
     .getElementById("contact-created")
     .classList.add("createdNotification");
-  await setTimeout(() => {
+  setTimeout(() => {
     document.getElementById("contact-created").classList.add("d-none");
   }, 1950);
 }
@@ -277,12 +276,21 @@ async function deleteContact(id) {
   contacts.splice(id, 1);
   await setItem("contacts", contacts);
   document.getElementById("contact-details").classList.add("d-none");
+  await loadContacts();
   renderContactList();
+
+  popUpMessage('User was deleted successfully!');
 
   if (window.innerWidth <= 1024) {
     hideContactDetails();
   }
 }
+
+function popUpMessage(message) {
+  document.querySelector('.registerWasASuccess').classList.remove('d-none')
+  document.querySelector('.registerWasASuccess').innerHTML += `${message}`;
+}
+
 
 /**
  * This function shows the Edit Contact Form
