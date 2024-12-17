@@ -48,7 +48,7 @@
             <div class="date-prio-container">
                 <div class="task-categories date">
                     <span>Due date</span>
-                    <input type="date" id="task-date" class="input-field date-task-inputfield" placeholder="dd/mm/yy">
+                    <input type="date" id="task-date" class="input-field date-task-inputfield" placeholder="dd/mm/yy"  max="9999-12-31" maxlength="8">
                 </div>
                 <div class="task-categories prio-categories">
                     <span>Prio</span>
@@ -80,7 +80,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="task-categories categories">
+                <div class="task-categories categories-input">
                     <span>Categories</span>
                     <div class="custom-select">
                         <button class="dropdown select-button" role="combobox" id="categories-select-button"

@@ -346,7 +346,7 @@ function renderTaskForm(
                             </button>
                         </div>
                     </div>
-                    <div class="task-categories categories">
+                    <div class="task-categories categories-input">
                         <div class="required">
                             <span>Categories</span><span class="red-asterisk">*</span>
                         </div>

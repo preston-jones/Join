@@ -71,6 +71,15 @@ span {
     padding-top: 16px;
 }
 
+.categories-input {
+    display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-shrink: 0;
+        padding: 16px 0 0 0;
+}
+
 #category-dropdown-menu {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -289,7 +298,7 @@ input:focus-visible{
     background-color: #fff;
     padding: 0.675em 1em;
     border: 1px solid #caced1;
-    border-radius: 0.25rem;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
