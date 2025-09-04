@@ -3,6 +3,8 @@
 **Join** is a modern **Multi-Page Application (MPA)** for task and contact management in a Kanban style.  
 The app provides an intuitive interface to organize tasks efficiently, manage contacts, and support teamwork.
 
+![board](assets/screenshots/board.JPG)
+
 ---
 
 ## 🚀 Features
@@ -35,6 +37,13 @@ The app provides an intuitive interface to organize tasks efficiently, manage co
 - Multi-Page Application architecture (MPA)
 - Structured file organization
 - JSDoc for code documentation
+
+---
+
+![login](assets/screenshots/login.JPG)
+![signup](assets/screenshots/signup.JPG)
+![summary](assets/screenshots/summary.JPG)
+
 
 ---
 
