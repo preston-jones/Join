@@ -61,3 +61,17 @@ There are two ways to run the app locally:
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-github-username/join-kanban-board.git
+
+2. Navigate into the project folder:
+cd join-kanban-board
+
+
+3. Start a local web server (e.g., VS Code extension Live Server).
+
+
+4. Open index.html in your browser.
+
+
+
+
+---
