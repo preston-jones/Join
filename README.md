@@ -1,90 +1,115 @@
-# 📌 Join – Kanban Board App
+# 🎮 Cyber City - 2D Sidescroller Game
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-View%20App-success?style=for-the-badge)](https://your-live-demo-url.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/preston-jones/Join)
+![Game Version](https://img.shields.io/badge/Version-1.0-blue)
+![Technology](https://img.shields.io/badge/Tech-Vanilla%20JavaScript-yellow)
+![Platform](https://img.shields.io/badge/Platform-Browser-green)
+![Style](https://img.shields.io/badge/Art%20Style-8--Bit%20Pixel-purple)
 
-**Join** is a modern **Multi-Page Application (MPA)** for task and contact management in a Kanban style.  
-Built with vanilla JavaScript, this collaborative project management tool provides an intuitive interface to organize tasks efficiently, manage contacts, and support seamless teamwork.
+A retro-style 2D sidescroller browser game built with pure Vanilla JavaScript, HTML5 Canvas, and CSS. Experience a nostalgic journey through the cyberpunk streets with classic arcade gameplay mechanics.
 
-> **🎯 Try it out:** [Live Demo](https://your-live-demo-url.com)
+## [Live Demo](https://preston-jones.github.io/2D_Sidescroller_Game/)
 
-![board](assets/screenshots/board.JPG)
+## 🎯 Features
 
----
-
-## 🚀 Features
-
-- 🔑 **User Management**
-  - Registration, login, logout & guest login
-  - Dashboard with greeting & task overview
-
-- 📋 **Kanban Board**
-  - Columns: ToDo, In Progress, Awaiting Feedback, Done
-  - Create, edit, delete & move tasks via drag & drop
-  - Subtasks with progress tracking
-  - Real-time task search
-
-- 👥 **Contacts**
-  - Alphabetically sorted contact list with detail view
-  - Add, edit, and delete contacts
-  - Manage and update your own profile data
-
-- ⚙️ **Additional Features**
-  - Responsive design (desktop & mobile)
-  - Integrated Legal Notice & Privacy Policy
-  - User feedback on interactions (hover effects, toast messages, etc.)
-
----
+- **🎮 Classic Sidescroller Gameplay** - Run, jump, and shoot your way through the cyberpunk city
+- **🎨 Retro Pixel Art Style** - Authentic 8-bit graphics reminiscent of classic arcade games  
+- **📱 Mobile & Desktop Support** - Responsive controls for both touch and keyboard input
+- **🎵 Dynamic Audio System** - Immersive sound effects and background music
+- **👾 Boss Battles** - Epic encounters with challenging boss enemies
+- **⚡ Power-ups & Collectibles** - Health and energy items to boost your performance
+- **💥 Visual Effects** - Screen effects, animations, and particle systems
+- **🏆 Victory & Game Over Screens** - Complete game flow with restart functionality
 
 ## 🛠️ Tech Stack
 
-| Frontend | Backend & Storage | Development |
-|----------|------------------|-------------|
-| HTML5, CSS3 | Firebase Realtime Database | VS Code |
-| Vanilla JavaScript (ES6+) | RESTful API integration | Live Server |
-| Responsive Design (Flexbox/Grid) | JSON data handling | Git version control |
-| Multi-Page Application (MPA) | Session/Local Storage | JSDoc documentation |
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| JavaScript | Core game logic | ES6+ |
+| HTML5 Canvas | 2D rendering | HTML5 |
+| CSS3 | Styling & animations | CSS3 |
+| Web Audio API | Sound management | Native |
 
-### 📱 Browser Compatibility
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Edge 90+
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+## 🏗️ Technical Architecture
 
----
+### Object-Oriented Design
+- **Class-Based Structure** - Modular design with inheritance hierarchy
+- **Core Classes**: `DrawableObject`, `MovableObject`, `Character`, `World`, `Level`
+- **Enemy System**: `Cop`, `Drone`, `BossEnemy` with unique behaviors
+- **Game Objects**: `Shot`, `Collectible`, `Statusbar` for interactive elements
 
-![login](assets/screenshots/login.JPG)
-![signup](assets/screenshots/signup.JPG)
-![summary](assets/screenshots/summary.JPG)
+### Collision Detection
+- **Precise Hit Detection** - Pixel-perfect collision algorithms
+- **Physics Integration** - Gravity, jumping mechanics, and object interactions
+- **Boundary Checking** - Level boundaries and platform collision system
 
+### State Management
+- **Game State Control** - Menu, playing, paused, game over states
+- **Character States** - Health, energy, movement, and animation states
+- **World State** - Dynamic environment with scrolling backgrounds and object spawning
+- **Audio State** - Sound effect and music management with volume controls
 
----
+## 📊 Browser Compatibility
 
-## ▶️ Installation & Local Setup
+| Browser | Support | Notes |
+|---------|---------|-------|
+| Chrome | ✅ Full | Recommended for best performance |
+| Firefox | ✅ Full | Excellent compatibility |
+| Safari | ✅ Full | Works on desktop and mobile |
+| Edge | ✅ Full | Modern versions supported |
+| Mobile Browsers | ✅ Touch | Optimized touch controls |
 
-There are two ways to run the app locally:
+## 🎮 Game Controls
 
-### 🔽 Option 1: Download
-1. Click **Code → Download ZIP** at the top of the repository.  
-2. Extract the ZIP file on your computer.  
-3. Open the folder in your editor (e.g., VS Code).  
-4. Launch the app by opening **index.html** in your browser (right-click → *Open in Browser* or via *Live Server*).
+### Desktop
+- **Arrow Keys** - Move left/right
+- **Space** - Jump
+- **C** - Shoot
 
-### 💻 Option 2: Git Clone
+### Mobile
+- **Touch Controls** - On-screen buttons for all actions
+- **Responsive Design** - Optimized for mobile devices
+
+## 🎨 Credits
+
+- **Game Development**: Preston Jones
+- **Art Assets**: Luis Zuno ([@ansimuz](https://ansimuz.com/))
+- **Inspiration**: Classic 8-bit arcade games
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Modern web browser with HTML5 Canvas support
+- Local web server (for development)
+
+### Installation
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/preston-jones/Join.git
-   ```
+```bash
+git clone https://github.com/preston-jones/2D_Sidescroller_Game.git
+```
 
-2. Navigate into the project folder:
-   ```bash
-   cd Join
-   ```
+2. Navigate to the project directory:
+```bash
+cd cyber-city-game
+```
 
-3. Start a local web server (e.g., VS Code extension Live Server).
+3. Start a local web server:
+```bash
+# Using Python
+python -m http.server 8000
 
-4. Open `index.html` in your browser.
+# Using Node.js (if you have live-server installed)
+live-server
+
+# Using VS Code Live Server extension
+# Right-click on index.html and select "Open with Live Server"
+```
+
+4. Open your browser and navigate to:
+```
+http://localhost:8000
+```
 
 ---
-⭐ **Enjoyed this project?** Give it a star and share it with others!
+
+*Have fun and enjoy a little time trip back to the arcade game era! 🕹️*
