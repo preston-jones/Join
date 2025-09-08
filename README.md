@@ -6,7 +6,7 @@
 **Join** is a modern **Multi-Page Application (MPA)** for task and contact management in a Kanban style.  
 Built with vanilla JavaScript, this collaborative project management tool provides an intuitive interface to organize tasks efficiently, manage contacts, and support seamless teamwork.
 
-> **🎯 Try it out:** [Live Demo](https://your-live-demo-url.com)
+> **🎯 Try it out:** [Live Demo](https://join.projects.prestonjones.dev)
 
 ![board](assets/screenshots/board.JPG)
 
