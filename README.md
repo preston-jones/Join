@@ -1,7 +1,12 @@
 # 📌 Join – Kanban Board App
 
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-View%20App-success?style=for-the-badge)](https://your-live-demo-url.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/preston-jones/Join)
+
 **Join** is a modern **Multi-Page Application (MPA)** for task and contact management in a Kanban style.  
-The app provides an intuitive interface to organize tasks efficiently, manage contacts, and support teamwork.
+Built with vanilla JavaScript, this collaborative project management tool provides an intuitive interface to organize tasks efficiently, manage contacts, and support seamless teamwork.
+
+> **🎯 Try it out:** [Live Demo](https://your-live-demo-url.com)
 
 ![board](assets/screenshots/board.JPG)
 
@@ -31,12 +36,21 @@ The app provides an intuitive interface to organize tasks efficiently, manage co
 
 ---
 
-## 🛠️ Technologies
+## 🛠️ Tech Stack
 
-- **HTML, CSS, JavaScript (ES6+)**
-- Multi-Page Application architecture (MPA)
-- Structured file organization
-- JSDoc for code documentation
+| Frontend | Backend & Storage | Development |
+|----------|------------------|-------------|
+| HTML5, CSS3 | Firebase Realtime Database | VS Code |
+| Vanilla JavaScript (ES6+) | RESTful API integration | Live Server |
+| Responsive Design (Flexbox/Grid) | JSON data handling | Git version control |
+| Multi-Page Application (MPA) | Session/Local Storage | JSDoc documentation |
+
+### 📱 Browser Compatibility
+- ✅ Chrome 90+
+- ✅ Firefox 88+
+- ✅ Safari 14+
+- ✅ Edge 90+
+- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
 
 ---
 
@@ -60,18 +74,17 @@ There are two ways to run the app locally:
 ### 💻 Option 2: Git Clone
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-github-username/join-kanban-board.git
+   git clone https://github.com/preston-jones/Join.git
+   ```
 
 2. Navigate into the project folder:
-cd join-kanban-board
-
+   ```bash
+   cd Join
+   ```
 
 3. Start a local web server (e.g., VS Code extension Live Server).
 
-
-4. Open index.html in your browser.
-
-
-
+4. Open `index.html` in your browser.
 
 ---
+⭐ **Enjoyed this project?** Give it a star and share it with others!
